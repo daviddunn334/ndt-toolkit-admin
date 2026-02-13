@@ -1,0 +1,35 @@
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+    // Allow authenticated users to upload report images
+    match /report_images/{userId}/{imageId} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+    }
+    
+    // Allow authenticated users to read any report images (for viewing reports)
+    match /report_images/{allPaths=**} {
+      allow read: if request.auth != null;
+    }
+    
+    // Allow authenticated users to upload defect photos for AI identification
+    match /defect_photos/{userId}/{imageId} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+    }
+    
+    // Allow authenticated users to upload temporary defect photos (legacy)
+    match /defect_photos/temporary/{userId}/{imageId} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+    }
+    
+    // Allow authenticated users to read any defect photos (for Cloud Function processing)
+    match /defect_photos/{allPaths=**} {
+      allow read: if request.auth != null;
+    }
+    
+    // Allow authenticated users to read and write PDF procedures
+    // TODO: Restrict write access to admins only in production
+    match /procedures/{allPaths=**} {
+      allow read, write, delete: if request.auth != null;
+    }
+  }
+}

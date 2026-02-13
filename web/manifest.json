@@ -1,0 +1,101 @@
+{
+    "name": "NDT-ToolKit",
+    "short_name": "NDT-ToolKit",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#1b325b",
+    "theme_color": "#1b325b",
+    "description": "NDT-ToolKit - Professional NDT tools and resources for pipeline integrity professionals.",
+    "orientation": "any",
+    "prefer_related_applications": false,
+    "scope": "/",
+    "categories": ["utilities", "productivity", "tools", "business"],
+    "lang": "en-US",
+    "dir": "ltr",
+    "iarc_rating_id": "",
+    "shortcuts": [
+        {
+            "name": "Tools",
+            "url": "/?screen=tools",
+            "description": "Open calculator tools",
+            "icons": [
+                {
+                    "src": "icons/icon-192.png",
+                    "sizes": "192x192"
+                }
+            ]
+        },
+        {
+            "name": "Reports",
+            "url": "/?screen=reports",
+            "description": "View inspection reports",
+            "icons": [
+                {
+                    "src": "icons/icon-192.png",
+                    "sizes": "192x192"
+                }
+            ]
+        },
+        {
+            "name": "Knowledge Base",
+            "url": "/?screen=knowledge",
+            "description": "Access NDT procedures and standards",
+            "icons": [
+                {
+                    "src": "icons/icon-192.png",
+                    "sizes": "192x192"
+                }
+            ]
+        },
+        {
+            "name": "Company Directory",
+            "url": "/?screen=directory",
+            "description": "Contact employees",
+            "icons": [
+                {
+                    "src": "icons/icon-192.png",
+                    "sizes": "192x192"
+                }
+            ]
+        }
+    ],
+    "screenshots": [],
+    "icons": [
+        {
+            "src": "icons/icon-192.png",
+            "sizes": "192x192",
+            "type": "image/png",
+            "purpose": "any"
+        },
+        {
+            "src": "icons/icon-512.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "any"
+        },
+        {
+            "src": "icons/icon-192-maskable.png",
+            "sizes": "192x192",
+            "type": "image/png",
+            "purpose": "maskable"
+        },
+        {
+            "src": "icons/icon-512-maskable.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "maskable"
+        },
+        {
+            "src": "icons/icon-192-maskable.png",
+            "sizes": "192x192",
+            "type": "image/png",
+            "purpose": "any maskable"
+        },
+        {
+            "src": "icons/icon-512-maskable.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "any maskable"
+        }
+    ]
+}
