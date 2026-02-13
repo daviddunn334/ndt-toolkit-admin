@@ -175,9 +175,9 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
           ),
           const SizedBox(height: 40),
           
-          // App name (hidden on mobile - only shown in login panel)
+          // Admin Panel Title
           const Text(
-            'Advancing NDT',
+            'Admin Panel',
             style: TextStyle(
               fontSize: 48,
               fontWeight: FontWeight.w800,
@@ -189,22 +189,21 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
           
           // Tagline
           const Text(
-            'Empowering the modern inspector.',
+            'Manage your NDT-ToolKit platform',
             style: TextStyle(
               fontSize: 18,
               color: Color(0xFFAEBBC8),
-              fontStyle: FontStyle.italic,
               height: 1.6,
             ),
           ),
           const SizedBox(height: 48),
           
           // Feature highlights
-          _buildFeatureItem(Icons.analytics_outlined, 'Field Ready'),
+          _buildFeatureItem(Icons.shield_outlined, 'User Management'),
           const SizedBox(height: 20),
-          _buildFeatureItem(Icons.calculate_outlined, 'Professional NDT Tools'),
+          _buildFeatureItem(Icons.analytics_outlined, 'Analytics Dashboard'),
           const SizedBox(height: 20),
-          _buildFeatureItem(Icons.insights_outlined, 'Real-time Insights'),
+          _buildFeatureItem(Icons.article_outlined, 'Content Management'),
         ],
       ),
     );
@@ -265,50 +264,90 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  // Logo (mobile only) - No text, just logo
+                  // Logo (mobile only) with ADMIN badge
                   if (MediaQuery.of(context).size.width < 1200) ...[
                     Center(
-                      child: Image.asset(
-                        'assets/logos/logo_main.png',
-                        width: 150,
-                        height: 150,
+                      child: Column(
+                        children: [
+                          Image.asset(
+                            'assets/logos/logo_main.png',
+                            width: 150,
+                            height: 150,
+                          ),
+                          const SizedBox(height: 12),
+                          Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                            decoration: BoxDecoration(
+                              color: const Color(0xFFFE637E),
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            child: const Text(
+                              'ADMIN',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 11,
+                                letterSpacing: 1.5,
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                     const SizedBox(height: 20),
                   ],
                   
-                  // Welcome text (hidden on mobile)
-                  if (MediaQuery.of(context).size.width >= 1200)
-                    const Text(
-                      'Welcome back',
-                      style: TextStyle(
-                        fontSize: 32,
-                        fontWeight: FontWeight.w700,
-                        color: Color(0xFFEDF9FF),
-                        letterSpacing: -0.5,
-                      ),
-                      textAlign: TextAlign.center,
+                  // Admin Login Header
+                  const Text(
+                    'Admin Login',
+                    style: TextStyle(
+                      fontSize: 32,
+                      fontWeight: FontWeight.w700,
+                      color: Color(0xFFEDF9FF),
+                      letterSpacing: -0.5,
                     ),
-                  if (MediaQuery.of(context).size.width < 1200)
-                    const Text(
-                      'Welcome back',
-                      style: TextStyle(
-                        fontSize: 32,
-                        fontWeight: FontWeight.w700,
-                        color: Color(0xFFEDF9FF),
-                        letterSpacing: -0.5,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
+                    textAlign: TextAlign.center,
+                  ),
                   const SizedBox(height: 12),
                   const Text(
-                    'Sign in to access your dashboard',
+                    'Sign in to access the admin panel',
                     style: TextStyle(
                       fontSize: 15,
                       color: Color(0xFFAEBBC8),
                       fontWeight: FontWeight.w400,
                     ),
                     textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: 8),
+                  // Security notice
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                    decoration: BoxDecoration(
+                      color: const Color(0xFFFE637E).withOpacity(0.1),
+                      borderRadius: BorderRadius.circular(8),
+                      border: Border.all(
+                        color: const Color(0xFFFE637E).withOpacity(0.2),
+                      ),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Icon(
+                          Icons.shield_outlined,
+                          color: Color(0xFFFE637E),
+                          size: 16,
+                        ),
+                        const SizedBox(width: 8),
+                        Text(
+                          'Admin access only • Unauthorized access is monitored',
+                          style: TextStyle(
+                            fontSize: 11,
+                            color: const Color(0xFFFE637E).withOpacity(0.9),
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                   const SizedBox(height: 40),
                   
@@ -480,51 +519,6 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
                     ),
                   ),
                   
-                  const SizedBox(height: 28),
-                  
-                  // Divider
-                  Row(
-                    children: [
-                      Expanded(
-                        child: Container(
-                          height: 1,
-                          color: Colors.white.withOpacity(0.05),
-                        ),
-                      ),
-                      const Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 16),
-                        child: Text(
-                          'New here?',
-                          style: TextStyle(
-                            color: Color(0xFF7F8A96),
-                            fontSize: 13,
-                          ),
-                        ),
-                      ),
-                      Expanded(
-                        child: Container(
-                          height: 1,
-                          color: Colors.white.withOpacity(0.05),
-                        ),
-                      ),
-                    ],
-                  ),
-                  
-                  const SizedBox(height: 24),
-                  
-                  // Sign up link
-                  _buildSecondaryButton(
-                    onPressed: () {
-                      Navigator.of(context).pushReplacementNamed('/signup');
-                    },
-                    child: const Text(
-                      'Create new account',
-                      style: TextStyle(
-                        fontWeight: FontWeight.w600,
-                        fontSize: 14,
-                      ),
-                    ),
-                  ),
                 ],
               ),
             ),
