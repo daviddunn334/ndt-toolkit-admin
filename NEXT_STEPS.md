@@ -1,4 +1,4 @@
-# Next Steps - Action Required
+# Next Steps - Custom Domain Setup
 
 ## ✅ What's Been Completed
 
@@ -12,76 +12,122 @@
 ### 2. GitHub Actions Workflow
 - ✅ Created `.github/workflows/firebase-deploy.yml`
 - ✅ Configured automatic deployments for all three branches
-- ✅ Ready to deploy when pushed to GitHub
+- ✅ Firebase service account secret added to GitHub
+- ✅ Successfully tested workflow - deployments working!
 
-### 3. Documentation Created
+### 3. Domain Verification
+- ✅ Custom domain **ndt-toolkit.com** verified in Firebase
+
+### 4. Documentation Created
 - ✅ `FIREBASE_MULTISITE_SETUP.md` - Multi-site setup guide
 - ✅ `DEPLOYMENT_SUMMARY.md` - Deployment configuration summary
 - ✅ `GITHUB_ACTIONS_SETUP.md` - GitHub Actions overview
-- ✅ `SERVICE_ACCOUNT_INSTRUCTIONS.md` - Detailed manual setup instructions
+- ✅ `SERVICE_ACCOUNT_INSTRUCTIONS.md` - Service account guide
+- ✅ `CUSTOM_DOMAIN_SETUP.md` - **NEW: Domain connection guide**
 
 ---
 
-## 🎯 What You Need to Do Now
+## 🎯 Current Task: Connect Custom Domain
 
-### Step 1: Generate Firebase Service Account Key (5 minutes)
+You now need to connect **ndt-toolkit.com** to your three Firebase hosting sites.
 
-**Easiest Method:**
-1. Go to https://console.firebase.google.com/project/ndt-toolkit/settings/serviceaccounts/adminsdk
-2. Click **"Generate new private key"** button
-3. Click **"Generate key"** to confirm
-4. Save the JSON file that downloads
+### 📖 Follow the Guide
 
-### Step 2: Add Secret to GitHub (2 minutes)
+Open **`CUSTOM_DOMAIN_SETUP.md`** and follow the step-by-step instructions to:
 
-1. Open the downloaded JSON file in a text editor
-2. Copy **ALL** the content (entire JSON object)
-3. Go to https://github.com/daviddunn334/ndt-toolkit/settings/secrets/actions
-4. Click **"New repository secret"**
-5. Name: `FIREBASE_SERVICE_ACCOUNT`
-6. Value: Paste the JSON content
-7. Click **"Add secret"**
+1. **Connect main domain** (`ndt-toolkit.com`) → Production site
+2. **Connect preview subdomain** (`preview.ndt-toolkit.com`) → Preview site  
+3. **Connect admin subdomain** (`admin.ndt-toolkit.com`) → Admin site
 
-### Step 3: Tell Me When Done
+### ⚡ Quick Links
 
-Once you've added the secret to GitHub, let me know and I'll:
-1. Commit all the configuration files
-2. Push to the development branch
-3. The GitHub Action will automatically trigger
-4. Deploy to the preview site
-5. We can verify it worked!
+- **Domain Setup Guide:** [CUSTOM_DOMAIN_SETUP.md](./CUSTOM_DOMAIN_SETUP.md)
+- **Firebase Hosting Console:** https://console.firebase.google.com/project/ndt-toolkit/hosting/sites
+- **Your Domain Registrar:** (where you'll add DNS records)
 
 ---
 
-## 📊 Current State
+## 📋 Domain Connection Checklist
 
-**Files Ready to Commit:**
-```
-Modified:
-  .firebaserc                              (hosting targets)
-  firebase.json                            (multi-site config)
-  .github/workflows/firebase-deploy.yml    (automation workflow)
-  memory-bank/activeContext.md             (updated context)
+Work through these in order:
 
-New Files:
-  DEPLOYMENT_SUMMARY.md                    (deployment info)
-  FIREBASE_MULTISITE_SETUP.md              (setup guide)
-  GITHUB_ACTIONS_SETUP.md                  (actions guide)
-  SERVICE_ACCOUNT_INSTRUCTIONS.md          (service account guide)
-```
+- [ ] **Step 1:** Connect `ndt-toolkit.com` to production site
+  - [ ] Add custom domain in Firebase Console
+  - [ ] Get A records from Firebase
+  - [ ] Add A records to domain registrar DNS
+  - [ ] Verify domain in Firebase
+  - [ ] Wait for SSL certificate provisioning
 
-**Current Branch:** development  
-**Preview Site:** https://ndt-toolkit-preview.web.app (live!)
+- [ ] **Step 2:** Connect `preview.ndt-toolkit.com` to preview site
+  - [ ] Add custom domain in Firebase Console
+  - [ ] Get TXT and A records from Firebase
+  - [ ] Add records to domain registrar DNS
+  - [ ] Verify subdomain in Firebase
+  - [ ] Wait for SSL certificate provisioning
+
+- [ ] **Step 3:** Connect `admin.ndt-toolkit.com` to admin site
+  - [ ] Add custom domain in Firebase Console
+  - [ ] Get TXT and A records from Firebase
+  - [ ] Add records to domain registrar DNS
+  - [ ] Verify subdomain in Firebase
+  - [ ] Wait for SSL certificate provisioning
+
+- [ ] **Verification:** Test all domains are working
+  - [ ] https://ndt-toolkit.com loads
+  - [ ] https://www.ndt-toolkit.com loads
+  - [ ] https://preview.ndt-toolkit.com loads
+  - [ ] https://admin.ndt-toolkit.com loads
+  - [ ] All use HTTPS (no SSL warnings)
 
 ---
 
-## 🔐 Security Reminder
+## ⏰ Expected Timeline
 
-After adding the secret to GitHub:
-- ✅ **DELETE the JSON file from your computer**
-- ✅ Never commit the JSON file to git
-- ✅ The secret is encrypted in GitHub - only workflows can access it
+- **DNS Configuration:** 5-10 minutes (adding records)
+- **DNS Propagation:** 5 minutes to 24 hours (usually 15-30 minutes)
+- **SSL Provisioning:** Automatic after verification (up to 1 hour)
+- **Total Time:** Typically 30 minutes to 1 hour
 
 ---
 
-**Ready?** Follow Steps 1-2 above, then let me know when the secret is added to GitHub!
+## 🆘 Common Issues
+
+1. **Domain not loading after adding DNS records**
+   - Wait longer (DNS can take 24 hours)
+   - Clear browser cache / try incognito mode
+   - Check DNS propagation: https://dnschecker.org
+
+2. **SSL certificate not working**
+   - Firebase auto-provisions SSL after DNS verification
+   - Can take up to 1 hour after verification
+   - Try re-verifying in Firebase Console
+
+3. **Need help?**
+   - See troubleshooting section in `CUSTOM_DOMAIN_SETUP.md`
+   - Check Firebase documentation: https://firebase.google.com/docs/hosting/custom-domain
+
+---
+
+## 📱 After Domain Setup
+
+Once all domains are connected and working, we'll:
+
+1. ✅ Production at `ndt-toolkit.com` (live!)
+2. ✅ Preview at `preview.ndt-toolkit.com` (for testing)
+3. ✅ Admin at `admin.ndt-toolkit.com` (ready for admin panel)
+4. 🔜 Build admin panel branch
+5. 🔜 Clean up main branch (remove admin code)
+6. 🔜 Deploy to production
+
+---
+
+## 🚀 Current State
+
+**Working Directory:** `c:\Users\david\StudioProjects\ndt-toolkit`  
+**Current Branch:** `development`  
+**Domain Status:** Verified, ready to connect  
+**Next Action:** Follow `CUSTOM_DOMAIN_SETUP.md` to connect domains
+
+---
+
+**Ready to connect your domains? Open `CUSTOM_DOMAIN_SETUP.md` and let's get started! Let me know when you've completed each step or if you run into any issues.**
