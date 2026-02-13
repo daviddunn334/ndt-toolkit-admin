@@ -108,9 +108,9 @@ class AppTheme {
       elevation: 0,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(16),
-        side: BorderSide(color: Colors.white.withValues(alpha: 0.05), width: 1),
+        side: BorderSide(color: Colors.white.withOpacity(0.05), width: 1),
       ),
-      shadowColor: Colors.black.withValues(alpha: 0.1),
+      shadowColor: Colors.black.withOpacity(0.1),
     ),
     inputDecorationTheme: InputDecorationTheme(
       filled: true,
