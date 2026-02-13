@@ -6,33 +6,17 @@ import 'package:firebase_crashlytics/firebase_crashlytics.dart'
     show FirebaseCrashlytics;
 import 'firebase_options.dart';
 import 'services/offline_service.dart';
-import 'services/update_service.dart';
-import 'services/performance_service.dart';
-import 'services/coordinates_service.dart';
-import 'widgets/auto_update_notification.dart';
-import 'screens/main_screen.dart';
-import 'screens/corrosion_grid_logger_screen.dart';
-import 'screens/inspection_checklist_screen.dart';
-import 'screens/common_formulas_screen.dart';
-import 'screens/knowledge_base_screen.dart';
-import 'screens/field_safety_screen.dart';
-import 'screens/terminology_screen.dart';
-import 'screens/ndt_procedures_screen.dart';
-import 'screens/defect_types_screen.dart';
-import 'screens/equipment_guides_screen.dart';
-import 'screens/ut_physics_screen.dart';
-import 'screens/reports_screen.dart';
+import 'services/auth_service.dart';
+import 'services/user_service.dart';
+import 'screens/admin/admin_main_screen.dart';
 import 'screens/login_screen.dart';
 import 'screens/signup_screen.dart';
 import 'screens/reset_password_screen.dart';
 import 'screens/email_verification_screen.dart';
 import 'screens/terms_of_service_screen.dart';
 import 'screens/privacy_policy_screen.dart';
-import 'screens/news_updates_screen.dart';
-import 'screens/tools_screen.dart';
-import 'screens/method_hours_screen.dart';
+import 'screens/profile_screen.dart';
 import 'screens/feedback_screen.dart';
-import 'services/auth_service.dart';
 import 'package:firebase_auth/firebase_auth.dart' as fb_auth;
 import 'theme/app_theme.dart';
 
@@ -43,30 +27,12 @@ void main() async {
   final offlineService = OfflineService();
   await offlineService.initialize();
   
-  // Initialize PWA update service (web only)
-  // Do not block app startup if service worker isn't ready yet.
-  final updateService = UpdateService();
-  Future(() => updateService.initialize());
-  
-  // Initialize Hive for local storage (coordinates logger)
-  try {
-    await CoordinatesService.init();
-    if (kDebugMode) {
-      print('[Hive] Coordinates storage initialized');
-    }
-  } catch (e) {
-    if (kDebugMode) {
-      print('[Hive] Error initializing coordinates storage: $e');
-    }
-  }
-  
   try {
     await Firebase.initializeApp(
       options: DefaultFirebaseOptions.currentPlatform,
     );
     
     // Initialize Firebase Crashlytics (only on supported platforms)
-    // Crashlytics is not fully supported on web, so we need to check
     if (!kIsWeb) {
       FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
       
@@ -98,32 +64,26 @@ void main() async {
     final authService = AuthService();
     await authService.initialize();
     
-    // Initialize Firebase Performance Monitoring
-    // Performance monitoring is automatically enabled for web and mobile
-    // No additional initialization required - traces can be started immediately
     if (kDebugMode) {
-      print('[Performance] Firebase Performance Monitoring enabled');
+      print('[Admin Panel] Firebase initialized successfully');
     }
   } catch (e) {
     print('Error initializing Firebase: $e');
-    // App can still function offline with calculator tools
   }
   
-  runApp(const MyApp());
+  runApp(const AdminPanelApp());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class AdminPanelApp extends StatelessWidget {
+  const AdminPanelApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'NDT-ToolKit',
+      title: 'NDT-ToolKit Admin Panel',
       theme: AppTheme.theme,
       debugShowCheckedModeBanner: false,
-      home: const AggressiveUpdateWrapper(
-        child: AuthGate(),
-      ),
+      home: const AuthGate(),
       routes: {
         '/login': (context) => const LoginScreen(),
         '/signup': (context) => const SignupScreen(),
@@ -131,64 +91,10 @@ class MyApp extends StatelessWidget {
         '/email_verification': (context) => const EmailVerificationScreen(),
         '/terms_of_service': (context) => const TermsOfServiceScreen(),
         '/privacy_policy': (context) => const PrivacyPolicyScreen(),
-        '/corrosion_grid_logger': (context) => const CorrosionGridLoggerScreen(),
-        '/inspection_checklist': (context) => const InspectionChecklistScreen(),
-        '/common_formulas': (context) => const CommonFormulasScreen(),
-        '/knowledge_base': (context) => const KnowledgeBaseScreen(),
-        '/ut_physics': (context) => const UtPhysicsScreen(),
-        '/field_safety': (context) => const FieldSafetyScreen(),
-        '/terminology': (context) => const TerminologyScreen(),
-        '/ndt_procedures': (context) => const NDTProceduresScreen(),
-        '/defect_types': (context) => const DefectTypesScreen(),
-        '/equipment_guides': (context) => const EquipmentGuidesScreen(),
-        '/reporting': (context) => const ReportsScreen(),
-        '/news_updates': (context) => const NewsUpdatesScreen(),
-        '/tools': (context) => const ToolsScreen(),
-        '/reports': (context) => const ReportsScreen(),
-        '/method_hours': (context) => const MethodHoursScreen(),
+        '/admin': (context) => const AdminMainScreen(),
+        '/profile': (context) => const ProfileScreen(),
         '/feedback': (context) => const FeedbackScreen(),
-      }
-    );
-  }
-}
-
-/// Wrapper that shows aggressive auto-update notification
-class AggressiveUpdateWrapper extends StatefulWidget {
-  final Widget child;
-
-  const AggressiveUpdateWrapper({
-    Key? key,
-    required this.child,
-  }) : super(key: key);
-
-  @override
-  State<AggressiveUpdateWrapper> createState() => _AggressiveUpdateWrapperState();
-}
-
-class _AggressiveUpdateWrapperState extends State<AggressiveUpdateWrapper> {
-  final UpdateService _updateService = UpdateService();
-  String? _updateVersion;
-
-  @override
-  void initState() {
-    super.initState();
-    // Listen for updates
-    _updateService.updateAvailableStream.listen((version) {
-      setState(() {
-        _updateVersion = version;
-      });
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        widget.child,
-        // Show aggressive auto-update notification if update available
-        if (_updateVersion != null)
-          AutoUpdateOverlay(version: _updateVersion!),
-      ],
+      },
     );
   }
 }
@@ -205,9 +111,40 @@ class AuthGate extends StatelessWidget {
       builder: (context, offlineSnapshot) {
         final bool isOnline = offlineSnapshot.data ?? true;
         
-        // If offline, bypass authentication and go directly to tools
+        // Admin panel requires online connection
         if (!isOnline) {
-          return const OfflineMainScreen();
+          return Scaffold(
+            backgroundColor: const Color(0xFF0F172A),
+            body: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Icon(
+                    Icons.wifi_off,
+                    size: 64,
+                    color: Colors.white70,
+                  ),
+                  const SizedBox(height: 24),
+                  const Text(
+                    'Admin Panel Offline',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+                  Text(
+                    'Please check your internet connection',
+                    style: TextStyle(
+                      color: Colors.white.withOpacity(0.7),
+                      fontSize: 16,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
         }
         
         // If online, proceed with normal authentication flow
@@ -238,8 +175,8 @@ class AuthGate extends StatelessWidget {
               return const LoginScreen();
             }
 
-            // Check email verification for authenticated users
-            return const EmailVerificationChecker();
+            // Check email verification and admin status
+            return const AdminVerificationChecker();
           },
         );
       },
@@ -247,9 +184,9 @@ class AuthGate extends StatelessWidget {
   }
 }
 
-/// Widget that checks if user needs email verification (with grandfathering)
-class EmailVerificationChecker extends StatelessWidget {
-  const EmailVerificationChecker({super.key});
+/// Widget that checks if user is verified and has admin privileges
+class AdminVerificationChecker extends StatelessWidget {
+  const AdminVerificationChecker({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -259,72 +196,111 @@ class EmailVerificationChecker extends StatelessWidget {
       return const LoginScreen();
     }
 
-    // GRANDFATHERING LOGIC: Protect existing users
-    // Cutoff date: February 12, 2026 (deployment date)
-    final cutoffDate = DateTime(2026, 2, 12);
-    final accountCreated = user.metadata.creationTime;
-
-    // If account was created BEFORE the cutoff date, skip email verification
-    if (accountCreated != null && accountCreated.isBefore(cutoffDate)) {
-      if (kDebugMode) {
-        print('[EmailVerification] Grandfathered user (created: $accountCreated) - skipping verification');
-      }
-      return const MainScreen();
-    }
-
-    // For NEW users (created on or after cutoff), check email verification
+    // Check email verification
     if (!user.emailVerified) {
-      if (kDebugMode) {
-        print('[EmailVerification] New user (created: $accountCreated) - requires verification');
+      // Grandfathering logic
+      final cutoffDate = DateTime(2026, 2, 12);
+      final accountCreated = user.metadata.creationTime;
+      
+      if (accountCreated != null && accountCreated.isBefore(cutoffDate)) {
+        // Grandfathered user - proceed to admin check
+        return const AdminAccessChecker();
       }
+      
+      // New user needs verification
       return const EmailVerificationScreen();
     }
 
-    // Email is verified - proceed to main screen
-    if (kDebugMode) {
-      print('[EmailVerification] Email verified - granting access');
-    }
-    return const MainScreen();
+    // Email verified - check admin status
+    return const AdminAccessChecker();
   }
 }
 
-/// A simplified main screen for offline mode that only shows calculator tools
-class OfflineMainScreen extends StatelessWidget {
-  const OfflineMainScreen({super.key});
+/// Check if user has admin privileges
+class AdminAccessChecker extends StatelessWidget {
+  const AdminAccessChecker({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('NDT-ToolKit (Offline)'),
-        backgroundColor: AppTheme.primaryBlue,
-        foregroundColor: Colors.white,
-      ),
-      body: Column(
-        children: [
-          // Offline banner
-          Container(
-            width: double.infinity,
-            color: Colors.orange,
-            padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-            child: const Row(
-              children: [
-                Icon(Icons.wifi_off, color: Colors.white),
-                SizedBox(width: 8),
-                Text(
-                  'You are offline. Only calculator tools are available.',
-                  style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-                ),
-              ],
+    return FutureBuilder<bool>(
+      future: UserService().isCurrentUserAdmin(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Scaffold(
+            backgroundColor: Color(0xFF0F172A),
+            body: Center(
+              child: LoadingLogo(),
             ),
-          ),
-          
-          // Tools screen
-          const Expanded(
-            child: ToolsScreen(),
-          ),
-        ],
-      ),
+          );
+        }
+
+        final isAdmin = snapshot.data ?? false;
+        
+        if (!isAdmin) {
+          // Not an admin - show access denied
+          return Scaffold(
+            backgroundColor: const Color(0xFF0F172A),
+            body: Center(
+              child: Padding(
+                padding: const EdgeInsets.all(32),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Icon(
+                      Icons.lock,
+                      size: 64,
+                      color: Colors.white70,
+                    ),
+                    const SizedBox(height: 24),
+                    const Text(
+                      'Access Denied',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 28,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(height: 12),
+                    Text(
+                      'This is the Admin Panel.\nYou need administrator privileges to access this area.',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: Colors.white.withOpacity(0.7),
+                        fontSize: 16,
+                      ),
+                    ),
+                    const SizedBox(height: 32),
+                    ElevatedButton.icon(
+                      onPressed: () async {
+                        await AuthService().signOut();
+                        if (context.mounted) {
+                          Navigator.of(context).pushReplacementNamed('/login');
+                        }
+                      },
+                      icon: const Icon(Icons.logout),
+                      label: const Text('Sign Out'),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: AppTheme.primaryBlue,
+                        foregroundColor: Colors.white,
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 32,
+                          vertical: 16,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          );
+        }
+
+        // User is admin - grant access
+        if (kDebugMode) {
+          print('[AdminPanel] Admin access granted');
+        }
+        return const AdminMainScreen();
+      },
     );
   }
 }
@@ -370,13 +346,28 @@ class _LoadingLogoState extends State<LoadingLogo> with SingleTickerProviderStat
           child: child,
         );
       },
-      child: SizedBox(
-        width: 250,
-        height: 250,
-        child: Image.asset(
-          'assets/logos/logo_main.png',
-          fit: BoxFit.contain,
-        ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          SizedBox(
+            width: 200,
+            height: 200,
+            child: Image.asset(
+              'assets/logos/logo_main.png',
+              fit: BoxFit.contain,
+            ),
+          ),
+          const SizedBox(height: 24),
+          const Text(
+            'Admin Panel',
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+              letterSpacing: 1.2,
+            ),
+          ),
+        ],
       ),
     );
   }
