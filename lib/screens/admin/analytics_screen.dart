@@ -9,7 +9,7 @@ class AnalyticsScreen extends StatefulWidget {
 }
 
 class _AnalyticsScreenState extends State<AnalyticsScreen> {
-  String _selectedTimeRange = 'Last 7 Days';
+  String _selectedTimeRange = 'Last 30 Days';
   final List<String> _timeRanges = [
     'Last 7 Days',
     'Last 30 Days',
@@ -36,30 +36,43 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> {
                 children: [
                   // Time Range Selector
                   _buildTimeRangeSelector(),
-                  const SizedBox(height: 32),
+                  const SizedBox(height: 24),
 
-                  // Overview Stats
-                  _buildOverviewStats(),
-                  const SizedBox(height: 32),
+                  // Key Metrics Overview
+                  _buildKeyMetrics(),
+                  const SizedBox(height: 24),
 
-                  // User Analytics
-                  _buildUserAnalytics(),
-                  const SizedBox(height: 32),
+                  // Test Activity & Report Status
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Expanded(child: _buildTestActivity()),
+                      const SizedBox(width: 24),
+                      Expanded(child: _buildReportStatus()),
+                    ],
+                  ),
+                  const SizedBox(height: 24),
 
-                  // Content Analytics
-                  _buildContentAnalytics(),
-                  const SizedBox(height: 32),
+                  // Equipment Usage & Popular Tests
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Expanded(child: _buildEquipmentUsage()),
+                      const SizedBox(width: 24),
+                      Expanded(child: _buildPopularTests()),
+                    ],
+                  ),
+                  const SizedBox(height: 24),
 
-                  // System Performance
-                  _buildSystemPerformance(),
-                  const SizedBox(height: 32),
-
-                  // Reports Analytics
-                  _buildReportsAnalytics(),
-                  const SizedBox(height: 32),
-
-                  // Engagement Metrics
-                  _buildEngagementMetrics(),
+                  // User Activity & Document Access
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Expanded(child: _buildUserActivity()),
+                      const SizedBox(width: 24),
+                      Expanded(child: _buildDocumentAccess()),
+                    ],
+                  ),
                 ],
               ),
             ),
@@ -73,21 +86,13 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> {
     return Container(
       padding: const EdgeInsets.fromLTRB(24, 24, 24, 24),
       decoration: BoxDecoration(
-        gradient: LinearGradient(
-          colors: [
-            Colors.purple,
-            Colors.purple.withOpacity(0.8),
-          ],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-        ),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.purple.withOpacity(0.3),
-            blurRadius: 20,
-            offset: const Offset(0, 10),
+        color: AppTheme.surface,
+        border: Border(
+          bottom: BorderSide(
+            color: AppTheme.textPrimary.withOpacity(0.05),
+            width: 1,
           ),
-        ],
+        ),
       ),
       child: SafeArea(
         child: Row(
@@ -95,12 +100,12 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> {
             Container(
               padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
-                color: Colors.white.withOpacity(0.2),
+                color: AppTheme.primaryAccent.withOpacity(0.1),
                 borderRadius: BorderRadius.circular(12),
               ),
-              child: const Icon(
+              child: Icon(
                 Icons.analytics,
-                color: Colors.white,
+                color: AppTheme.primaryAccent,
                 size: 28,
               ),
             ),
@@ -109,19 +114,19 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
+                  Text(
                     'Analytics Dashboard',
                     style: TextStyle(
-                      color: Colors.white,
+                      color: AppTheme.textPrimary,
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    'Track performance and user engagement',
+                    'Track NDT operations and system performance',
                     style: TextStyle(
-                      color: Colors.white.withOpacity(0.9),
+                      color: AppTheme.textSecondary,
                       fontSize: 16,
                     ),
                   ),
@@ -132,7 +137,7 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> {
               Builder(
                 builder: (context) => IconButton(
                   onPressed: () => Scaffold.of(context).openDrawer(),
-                  icon: const Icon(Icons.menu, color: Colors.white, size: 28),
+                  icon: Icon(Icons.menu, color: AppTheme.textPrimary, size: 28),
                 ),
               ),
           ],
@@ -145,35 +150,44 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> {
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppTheme.surface,
         borderRadius: BorderRadius.circular(16),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.05),
-            blurRadius: 10,
-            offset: const Offset(0, 2),
-          ),
-        ],
+        border: Border.all(
+          color: AppTheme.textPrimary.withOpacity(0.05),
+          width: 1,
+        ),
       ),
       child: Row(
         children: [
-          _buildSectionHeader('Analytics Overview', Icons.date_range),
+          Icon(Icons.date_range, color: AppTheme.primaryAccent, size: 20),
+          const SizedBox(width: 12),
+          Text(
+            'Time Period',
+            style: AppTheme.titleMedium.copyWith(
+              fontWeight: FontWeight.bold,
+              color: AppTheme.textPrimary,
+            ),
+          ),
           const Spacer(),
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
             decoration: BoxDecoration(
-              color: Colors.purple.withOpacity(0.1),
+              color: AppTheme.primaryAccent.withOpacity(0.1),
               borderRadius: BorderRadius.circular(12),
-              border: Border.all(color: Colors.purple.withOpacity(0.3)),
+              border: Border.all(
+                color: AppTheme.primaryAccent.withOpacity(0.3),
+                width: 1,
+              ),
             ),
             child: DropdownButton<String>(
               value: _selectedTimeRange,
               underline: const SizedBox(),
-              icon: const Icon(Icons.arrow_drop_down, color: Colors.purple),
+              icon: Icon(Icons.arrow_drop_down, color: AppTheme.primaryAccent),
               style: AppTheme.bodyMedium.copyWith(
-                color: Colors.purple,
+                color: AppTheme.primaryAccent,
                 fontWeight: FontWeight.w600,
               ),
+              dropdownColor: AppTheme.surface,
               items: _timeRanges.map((range) {
                 return DropdownMenuItem(
                   value: range,
@@ -192,90 +206,73 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> {
     );
   }
 
-  Widget _buildSectionHeader(String title, IconData icon) {
-    return Row(
-      children: [
-        Container(
-          padding: const EdgeInsets.all(8),
-          decoration: BoxDecoration(
-            color: Colors.purple.withOpacity(0.1),
-            borderRadius: BorderRadius.circular(8),
-          ),
-          child: Icon(
-            icon,
-            color: Colors.purple,
-            size: 20,
-          ),
-        ),
-        const SizedBox(width: 12),
-        Text(
-          title,
-          style: AppTheme.titleMedium.copyWith(
-            fontWeight: FontWeight.bold,
-            color: AppTheme.textPrimary,
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildOverviewStats() {
+  Widget _buildKeyMetrics() {
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppTheme.surface,
         borderRadius: BorderRadius.circular(16),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.05),
-            blurRadius: 10,
-            offset: const Offset(0, 2),
-          ),
-        ],
+        border: Border.all(
+          color: AppTheme.textPrimary.withOpacity(0.05),
+          width: 1,
+        ),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _buildSectionHeader('Key Metrics', Icons.trending_up),
+          Row(
+            children: [
+              Icon(Icons.trending_up,
+                  color: AppTheme.secondaryAccent, size: 20),
+              const SizedBox(width: 12),
+              Text(
+                'Key Performance Indicators',
+                style: AppTheme.titleMedium.copyWith(
+                  fontWeight: FontWeight.bold,
+                  color: AppTheme.textPrimary,
+                ),
+              ),
+            ],
+          ),
           const SizedBox(height: 20),
           GridView.count(
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
             crossAxisCount: MediaQuery.of(context).size.width > 800 ? 4 : 2,
-            childAspectRatio: 1.2,
+            childAspectRatio: 1.3,
             crossAxisSpacing: 16,
             mainAxisSpacing: 16,
             children: [
               _buildMetricCard(
-                'Total Users',
-                '1,247',
-                '+12.5%',
+                'Tests Completed',
+                '487',
+                '+18.2%',
+                Icons.check_circle,
+                AppTheme.secondaryAccent,
+                true,
+              ),
+              _buildMetricCard(
+                'Active Users',
+                '34',
+                '+5.8%',
                 Icons.people,
-                Colors.blue,
+                Color(0xFF6C5BFF),
                 true,
               ),
               _buildMetricCard(
-                'Active Sessions',
-                '89',
-                '+5.2%',
-                Icons.online_prediction,
-                Colors.green,
+                'Reports Generated',
+                '312',
+                '+12.4%',
+                Icons.description,
+                Color(0xFF2A9D8F),
                 true,
               ),
               _buildMetricCard(
-                'Page Views',
-                '15.2K',
-                '+8.7%',
-                Icons.visibility,
-                Colors.orange,
-                true,
-              ),
-              _buildMetricCard(
-                'Bounce Rate',
-                '23.4%',
-                '-2.1%',
-                Icons.trending_down,
-                Colors.red,
+                'Failed Tests',
+                '23',
+                '-8.3%',
+                Icons.warning,
+                AppTheme.accessoryAccent,
                 false,
               ),
             ],
@@ -292,18 +289,57 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> {
       decoration: BoxDecoration(
         color: color.withOpacity(0.05),
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: color.withOpacity(0.2)),
+        border: Border.all(
+          color: color.withOpacity(0.2),
+          width: 1,
+        ),
       ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Icon(icon, color: color, size: 28),
-          const SizedBox(height: 8),
+          Row(
+            children: [
+              Icon(icon, color: color, size: 24),
+              const Spacer(),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                decoration: BoxDecoration(
+                  color: (isPositive ? AppTheme.secondaryAccent : AppTheme.accessoryAccent)
+                      .withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(
+                      isPositive ? Icons.arrow_upward : Icons.arrow_downward,
+                      size: 12,
+                      color: isPositive
+                          ? AppTheme.secondaryAccent
+                          : AppTheme.accessoryAccent,
+                    ),
+                    const SizedBox(width: 4),
+                    Text(
+                      change,
+                      style: AppTheme.bodySmall.copyWith(
+                        color: isPositive
+                            ? AppTheme.secondaryAccent
+                            : AppTheme.accessoryAccent,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 12),
           Text(
             value,
-            style: AppTheme.titleLarge.copyWith(
-              fontWeight: FontWeight.bold,
+            style: AppTheme.headlineMedium.copyWith(
               color: color,
+              fontWeight: FontWeight.bold,
             ),
           ),
           const SizedBox(height: 4),
@@ -312,259 +348,497 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> {
             style: AppTheme.bodySmall.copyWith(
               color: AppTheme.textSecondary,
             ),
-            textAlign: TextAlign.center,
-          ),
-          const SizedBox(height: 4),
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-            decoration: BoxDecoration(
-              color: isPositive
-                  ? Colors.green.withOpacity(0.1)
-                  : Colors.red.withOpacity(0.1),
-              borderRadius: BorderRadius.circular(8),
-            ),
-            child: Text(
-              change,
-              style: AppTheme.bodySmall.copyWith(
-                color: isPositive ? Colors.green : Colors.red,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
           ),
         ],
       ),
     );
   }
 
-  Widget _buildUserAnalytics() {
+  Widget _buildTestActivity() {
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppTheme.surface,
         borderRadius: BorderRadius.circular(16),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.05),
-            blurRadius: 10,
-            offset: const Offset(0, 2),
-          ),
-        ],
+        border: Border.all(
+          color: AppTheme.textPrimary.withOpacity(0.05),
+          width: 1,
+        ),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _buildSectionHeader('User Analytics', Icons.person_outline),
-          const SizedBox(height: 20),
           Row(
             children: [
-              Expanded(
-                child: _buildUserChart(),
-              ),
-              const SizedBox(width: 20),
-              Expanded(
-                child: _buildUserStats(),
+              Icon(Icons.science, color: AppTheme.secondaryAccent, size: 20),
+              const SizedBox(width: 12),
+              Text(
+                'Test Activity',
+                style: AppTheme.titleMedium.copyWith(
+                  fontWeight: FontWeight.bold,
+                  color: AppTheme.textPrimary,
+                ),
               ),
             ],
           ),
+          const SizedBox(height: 20),
+          _buildSimpleBarChart([
+            {'label': 'Mon', 'value': 0.6, 'count': '45'},
+            {'label': 'Tue', 'value': 0.8, 'count': '62'},
+            {'label': 'Wed', 'value': 0.5, 'count': '38'},
+            {'label': 'Thu', 'value': 0.9, 'count': '71'},
+            {'label': 'Fri', 'value': 0.7, 'count': '53'},
+            {'label': 'Sat', 'value': 0.3, 'count': '22'},
+            {'label': 'Sun', 'value': 0.2, 'count': '15'},
+          ], AppTheme.secondaryAccent),
         ],
       ),
     );
   }
 
-  Widget _buildUserChart() {
+  Widget _buildReportStatus() {
     return Container(
-      height: 200,
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: Colors.blue.withOpacity(0.05),
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.blue.withOpacity(0.2)),
+        color: AppTheme.surface,
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(
+          color: AppTheme.textPrimary.withOpacity(0.05),
+          width: 1,
+        ),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            'User Growth',
-            style: AppTheme.bodyMedium.copyWith(
-              fontWeight: FontWeight.w600,
-              color: Colors.blue,
-            ),
+          Row(
+            children: [
+              Icon(Icons.assessment, color: Color(0xFF2A9D8F), size: 20),
+              const SizedBox(width: 12),
+              Text(
+                'Report Status',
+                style: AppTheme.titleMedium.copyWith(
+                  fontWeight: FontWeight.bold,
+                  color: AppTheme.textPrimary,
+                ),
+              ),
+            ],
           ),
-          const SizedBox(height: 16),
-          Expanded(
-            child: _buildSimpleChart([
-              {'day': 'Mon', 'value': 0.3},
-              {'day': 'Tue', 'value': 0.5},
-              {'day': 'Wed', 'value': 0.4},
-              {'day': 'Thu', 'value': 0.8},
-              {'day': 'Fri', 'value': 0.6},
-              {'day': 'Sat', 'value': 0.9},
-              {'day': 'Sun', 'value': 0.7},
-            ], Colors.blue),
-          ),
+          const SizedBox(height: 20),
+          _buildStatusItem('Completed', '278', 89, AppTheme.secondaryAccent),
+          const SizedBox(height: 12),
+          _buildStatusItem('Pending Review', '24', 8, AppTheme.yellowAccent),
+          const SizedBox(height: 12),
+          _buildStatusItem('In Progress', '10', 3, Color(0xFF6C5BFF)),
         ],
       ),
     );
   }
 
-  Widget _buildUserStats() {
+  Widget _buildStatusItem(
+      String label, String count, int percentage, Color color) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _buildStatItem('New Users', '23', Icons.person_add, Colors.green),
-        const SizedBox(height: 12),
-        _buildStatItem('Returning Users', '66', Icons.refresh, Colors.blue),
-        const SizedBox(height: 12),
-        _buildStatItem(
-            'Active Today', '89', Icons.online_prediction, Colors.orange),
-        const SizedBox(height: 12),
-        _buildStatItem('Avg. Session', '12m', Icons.timer, Colors.purple),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              label,
+              style: AppTheme.bodyMedium.copyWith(
+                color: AppTheme.textPrimary,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+            Text(
+              count,
+              style: AppTheme.bodyMedium.copyWith(
+                color: color,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 8),
+        Stack(
+          children: [
+            Container(
+              height: 8,
+              decoration: BoxDecoration(
+                color: color.withOpacity(0.1),
+                borderRadius: BorderRadius.circular(4),
+              ),
+            ),
+            FractionallySizedBox(
+              widthFactor: percentage / 100,
+              child: Container(
+                height: 8,
+                decoration: BoxDecoration(
+                  color: color,
+                  borderRadius: BorderRadius.circular(4),
+                ),
+              ),
+            ),
+          ],
+        ),
       ],
     );
   }
 
-  Widget _buildStatItem(
-      String title, String value, IconData icon, Color color) {
+  Widget _buildEquipmentUsage() {
+    return Container(
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: AppTheme.surface,
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(
+          color: AppTheme.textPrimary.withOpacity(0.05),
+          width: 1,
+        ),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Icon(Icons.precision_manufacturing,
+                  color: AppTheme.yellowAccent, size: 20),
+              const SizedBox(width: 12),
+              Text(
+                'Equipment Usage',
+                style: AppTheme.titleMedium.copyWith(
+                  fontWeight: FontWeight.bold,
+                  color: AppTheme.textPrimary,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 20),
+          _buildEquipmentItem(
+              'Ultrasonic Tester', '156 tests', 45, Color(0xFF6C5BFF)),
+          const SizedBox(height: 12),
+          _buildEquipmentItem('Hardness Tester', '142 tests', 41,
+              AppTheme.secondaryAccent),
+          const SizedBox(height: 12),
+          _buildEquipmentItem(
+              'Radiography Unit', '98 tests', 28, AppTheme.yellowAccent),
+          const SizedBox(height: 12),
+          _buildEquipmentItem('Magnetic Particle', '87 tests', 25,
+              AppTheme.accessoryAccent),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildEquipmentItem(
+      String name, String tests, int percentage, Color color) {
     return Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: color.withOpacity(0.05),
+        color: AppTheme.background,
         borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: color.withOpacity(0.2)),
+        border: Border.all(
+          color: AppTheme.textPrimary.withOpacity(0.05),
+          width: 1,
+        ),
       ),
       child: Row(
         children: [
-          Icon(icon, color: color, size: 20),
+          Container(
+            width: 8,
+            height: 8,
+            decoration: BoxDecoration(
+              color: color,
+              shape: BoxShape.circle,
+            ),
+          ),
           const SizedBox(width: 12),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  title,
-                  style: AppTheme.bodySmall.copyWith(
-                    color: AppTheme.textSecondary,
+                  name,
+                  style: AppTheme.bodyMedium.copyWith(
+                    fontWeight: FontWeight.w600,
+                    color: AppTheme.textPrimary,
                   ),
                 ),
+                const SizedBox(height: 4),
                 Text(
-                  value,
-                  style: AppTheme.bodyMedium.copyWith(
-                    fontWeight: FontWeight.bold,
-                    color: color,
+                  tests,
+                  style: AppTheme.bodySmall.copyWith(
+                    color: AppTheme.textSecondary,
                   ),
                 ),
               ],
             ),
           ),
+          Text(
+            '$percentage%',
+            style: AppTheme.bodyMedium.copyWith(
+              color: color,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
         ],
       ),
     );
   }
 
-  Widget _buildContentAnalytics() {
+  Widget _buildPopularTests() {
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppTheme.surface,
         borderRadius: BorderRadius.circular(16),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.05),
-            blurRadius: 10,
-            offset: const Offset(0, 2),
-          ),
-        ],
+        border: Border.all(
+          color: AppTheme.textPrimary.withOpacity(0.05),
+          width: 1,
+        ),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _buildSectionHeader('Content Performance', Icons.article),
-          const SizedBox(height: 20),
           Row(
             children: [
-              Expanded(
-                child: _buildContentChart(),
-              ),
-              const SizedBox(width: 20),
-              Expanded(
-                child: _buildTopContent(),
+              Icon(Icons.star, color: AppTheme.yellowAccent, size: 20),
+              const SizedBox(width: 12),
+              Text(
+                'Most Performed Tests',
+                style: AppTheme.titleMedium.copyWith(
+                  fontWeight: FontWeight.bold,
+                  color: AppTheme.textPrimary,
+                ),
               ),
             ],
           ),
+          const SizedBox(height: 20),
+          _buildTestItem('Hardness Testing', '142', Icons.science,
+              AppTheme.secondaryAccent),
+          const SizedBox(height: 12),
+          _buildTestItem('Ultrasonic Testing', '98', Icons.graphic_eq,
+              Color(0xFF6C5BFF)),
+          const SizedBox(height: 12),
+          _buildTestItem(
+              'Visual Inspection', '76', Icons.visibility, Color(0xFF2A9D8F)),
+          const SizedBox(height: 12),
+          _buildTestItem('Magnetic Particle', '53', Icons.attractions,
+              AppTheme.accessoryAccent),
         ],
       ),
     );
   }
 
-  Widget _buildContentChart() {
+  Widget _buildTestItem(String name, String count, IconData icon, Color color) {
     return Container(
-      height: 200,
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: Colors.green.withOpacity(0.05),
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.green.withOpacity(0.2)),
+        color: color.withOpacity(0.05),
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(
+          color: color.withOpacity(0.2),
+          width: 1,
+        ),
+      ),
+      child: Row(
+        children: [
+          Icon(icon, color: color, size: 20),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Text(
+              name,
+              style: AppTheme.bodyMedium.copyWith(
+                fontWeight: FontWeight.w600,
+                color: AppTheme.textPrimary,
+              ),
+            ),
+          ),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+            decoration: BoxDecoration(
+              color: color,
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: Text(
+              count,
+              style: AppTheme.bodySmall.copyWith(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildUserActivity() {
+    return Container(
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: AppTheme.surface,
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(
+          color: AppTheme.textPrimary.withOpacity(0.05),
+          width: 1,
+        ),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            'Content Views',
-            style: AppTheme.bodyMedium.copyWith(
-              fontWeight: FontWeight.w600,
-              color: Colors.green,
-            ),
+          Row(
+            children: [
+              Icon(Icons.people, color: Color(0xFF6C5BFF), size: 20),
+              const SizedBox(width: 12),
+              Text(
+                'User Activity',
+                style: AppTheme.titleMedium.copyWith(
+                  fontWeight: FontWeight.bold,
+                  color: AppTheme.textPrimary,
+                ),
+              ),
+            ],
           ),
-          const SizedBox(height: 16),
-          Expanded(
-            child: _buildSimpleChart([
-              {'day': 'Mon', 'value': 0.4},
-              {'day': 'Tue', 'value': 0.6},
-              {'day': 'Wed', 'value': 0.3},
-              {'day': 'Thu', 'value': 0.8},
-              {'day': 'Fri', 'value': 0.5},
-              {'day': 'Sat', 'value': 0.7},
-              {'day': 'Sun', 'value': 0.9},
-            ], Colors.green),
+          const SizedBox(height: 20),
+          _buildActivityStat(
+            'Active Today',
+            '18',
+            Icons.online_prediction,
+            AppTheme.secondaryAccent,
+          ),
+          const SizedBox(height: 12),
+          _buildActivityStat(
+            'New This Month',
+            '7',
+            Icons.person_add,
+            Color(0xFF6C5BFF),
+          ),
+          const SizedBox(height: 12),
+          _buildActivityStat(
+            'Avg. Session',
+            '24 min',
+            Icons.timer,
+            AppTheme.yellowAccent,
+          ),
+          const SizedBox(height: 12),
+          _buildActivityStat(
+            'Total Logins',
+            '892',
+            Icons.login,
+            Color(0xFF2A9D8F),
           ),
         ],
       ),
     );
   }
 
-  Widget _buildTopContent() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          'Top Content',
-          style: AppTheme.bodyMedium.copyWith(
-            fontWeight: FontWeight.w600,
-          ),
+  Widget _buildActivityStat(
+      String label, String value, IconData icon, Color color) {
+    return Container(
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: color.withOpacity(0.05),
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(
+          color: color.withOpacity(0.2),
+          width: 1,
         ),
-        const SizedBox(height: 12),
-        _buildContentItem('Safety Guidelines Update', '1,234 views',
-            Icons.security, Colors.red),
-        const SizedBox(height: 8),
-        _buildContentItem(
-            'Equipment Maintenance', '987 views', Icons.build, Colors.orange),
-        const SizedBox(height: 8),
-        _buildContentItem(
-            'New Procedures', '756 views', Icons.assignment, Colors.blue),
-        const SizedBox(height: 8),
-        _buildContentItem(
-            'Training Materials', '543 views', Icons.school, Colors.purple),
-      ],
+      ),
+      child: Row(
+        children: [
+          Icon(icon, color: color, size: 20),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Text(
+              label,
+              style: AppTheme.bodyMedium.copyWith(
+                color: AppTheme.textSecondary,
+              ),
+            ),
+          ),
+          Text(
+            value,
+            style: AppTheme.bodyMedium.copyWith(
+              color: color,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ],
+      ),
     );
   }
 
-  Widget _buildContentItem(
-      String title, String views, IconData icon, Color color) {
+  Widget _buildDocumentAccess() {
+    return Container(
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: AppTheme.surface,
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(
+          color: AppTheme.textPrimary.withOpacity(0.05),
+          width: 1,
+        ),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Icon(Icons.folder_open, color: Color(0xFF2A9D8F), size: 20),
+              const SizedBox(width: 12),
+              Text(
+                'Document Access',
+                style: AppTheme.titleMedium.copyWith(
+                  fontWeight: FontWeight.bold,
+                  color: AppTheme.textPrimary,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 20),
+          _buildDocumentItem(
+            'Safety Procedures',
+            '89 views',
+            Icons.security,
+            AppTheme.accessoryAccent,
+          ),
+          const SizedBox(height: 12),
+          _buildDocumentItem(
+            'Test Standards',
+            '67 views',
+            Icons.assignment,
+            Color(0xFF6C5BFF),
+          ),
+          const SizedBox(height: 12),
+          _buildDocumentItem(
+            'Equipment Manuals',
+            '54 views',
+            Icons.book,
+            AppTheme.yellowAccent,
+          ),
+          const SizedBox(height: 12),
+          _buildDocumentItem(
+            'Training Materials',
+            '43 views',
+            Icons.school,
+            AppTheme.secondaryAccent,
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildDocumentItem(
+      String name, String views, IconData icon, Color color) {
     return Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
         color: AppTheme.background,
         borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: AppTheme.divider),
+        border: Border.all(
+          color: AppTheme.textPrimary.withOpacity(0.05),
+          width: 1,
+        ),
       ),
       child: Row(
         children: [
@@ -575,11 +849,13 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  title,
-                  style: AppTheme.bodySmall.copyWith(
+                  name,
+                  style: AppTheme.bodyMedium.copyWith(
                     fontWeight: FontWeight.w600,
+                    color: AppTheme.textPrimary,
                   ),
                 ),
+                const SizedBox(height: 4),
                 Text(
                   views,
                   style: AppTheme.bodySmall.copyWith(
@@ -594,318 +870,56 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> {
     );
   }
 
-  Widget _buildSystemPerformance() {
-    return Container(
-      padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.05),
-            blurRadius: 10,
-            offset: const Offset(0, 2),
-          ),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          _buildSectionHeader('System Performance', Icons.speed),
-          const SizedBox(height: 20),
-          GridView.count(
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            crossAxisCount: MediaQuery.of(context).size.width > 800 ? 3 : 2,
-            childAspectRatio: 1.5,
-            crossAxisSpacing: 16,
-            mainAxisSpacing: 16,
-            children: [
-              _buildPerformanceCard(
-                  'Response Time', '180ms', 0.85, Colors.green),
-              _buildPerformanceCard('Uptime', '99.9%', 0.99, Colors.blue),
-              _buildPerformanceCard('Error Rate', '0.1%', 0.01, Colors.red),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildPerformanceCard(
-      String title, String value, double progress, Color color) {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: color.withOpacity(0.05),
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: color.withOpacity(0.2)),
-      ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text(
-            title,
-            style: AppTheme.bodyMedium.copyWith(
-              fontWeight: FontWeight.w600,
-            ),
-          ),
-          const SizedBox(height: 12),
-          Text(
-            value,
-            style: AppTheme.titleMedium.copyWith(
-              color: color,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          const SizedBox(height: 12),
-          LinearProgressIndicator(
-            value: progress,
-            backgroundColor: color.withOpacity(0.2),
-            valueColor: AlwaysStoppedAnimation<Color>(color),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildReportsAnalytics() {
-    return Container(
-      padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.05),
-            blurRadius: 10,
-            offset: const Offset(0, 2),
-          ),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          _buildSectionHeader('Reports Analytics', Icons.assessment),
-          const SizedBox(height: 20),
-          Row(
-            children: [
-              Expanded(
-                flex: 2,
-                child: _buildReportsChart(),
-              ),
-              const SizedBox(width: 20),
-              Expanded(
-                child: _buildReportsBreakdown(),
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildReportsChart() {
-    return Container(
-      height: 250,
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Colors.orange.withOpacity(0.05),
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.orange.withOpacity(0.2)),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            'Reports Submitted',
-            style: AppTheme.bodyMedium.copyWith(
-              fontWeight: FontWeight.w600,
-              color: Colors.orange,
-            ),
-          ),
-          const SizedBox(height: 16),
-          Expanded(
-            child: _buildSimpleChart([
-              {'day': 'Mon', 'value': 0.6},
-              {'day': 'Tue', 'value': 0.8},
-              {'day': 'Wed', 'value': 0.4},
-              {'day': 'Thu', 'value': 0.9},
-              {'day': 'Fri', 'value': 0.7},
-              {'day': 'Sat', 'value': 0.3},
-              {'day': 'Sun', 'value': 0.5},
-            ], Colors.orange),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildReportsBreakdown() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          'Report Types',
-          style: AppTheme.bodyMedium.copyWith(
-            fontWeight: FontWeight.w600,
-          ),
-        ),
-        const SizedBox(height: 12),
-        _buildReportTypeItem('Safety Reports', '45%', Colors.red),
-        const SizedBox(height: 8),
-        _buildReportTypeItem('Maintenance', '30%', Colors.orange),
-        const SizedBox(height: 8),
-        _buildReportTypeItem('Inspection', '15%', Colors.blue),
-        const SizedBox(height: 8),
-        _buildReportTypeItem('Other', '10%', Colors.grey),
-      ],
-    );
-  }
-
-  Widget _buildReportTypeItem(String type, String percentage, Color color) {
-    return Container(
-      padding: const EdgeInsets.all(12),
-      decoration: BoxDecoration(
-        color: color.withOpacity(0.05),
-        borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: color.withOpacity(0.2)),
-      ),
+  Widget _buildSimpleBarChart(
+      List<Map<String, dynamic>> data, Color color) {
+    return SizedBox(
+      height: 200,
       child: Row(
-        children: [
-          Container(
-            width: 12,
-            height: 12,
-            decoration: BoxDecoration(
-              color: color,
-              shape: BoxShape.circle,
-            ),
-          ),
-          const SizedBox(width: 12),
-          Expanded(
-            child: Text(
-              type,
-              style: AppTheme.bodySmall.copyWith(
-                fontWeight: FontWeight.w600,
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: data.map((item) {
+          return Expanded(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 4),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Text(
+                    item['count'],
+                    style: AppTheme.bodySmall.copyWith(
+                      color: color,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  Expanded(
+                    child: Align(
+                      alignment: Alignment.bottomCenter,
+                      child: Container(
+                        width: double.infinity,
+                        height: 140.0 * (item['value'] as double),
+                        decoration: BoxDecoration(
+                          color: color,
+                          borderRadius: const BorderRadius.vertical(
+                            top: Radius.circular(4),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    item['label'],
+                    style: AppTheme.bodySmall.copyWith(
+                      color: AppTheme.textSecondary,
+                    ),
+                  ),
+                ],
               ),
             ),
-          ),
-          Text(
-            percentage,
-            style: AppTheme.bodySmall.copyWith(
-              color: color,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-        ],
+          );
+        }).toList(),
       ),
-    );
-  }
-
-  Widget _buildEngagementMetrics() {
-    return Container(
-      padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.05),
-            blurRadius: 10,
-            offset: const Offset(0, 2),
-          ),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          _buildSectionHeader('Engagement Metrics', Icons.trending_up),
-          const SizedBox(height: 20),
-          GridView.count(
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            crossAxisCount: MediaQuery.of(context).size.width > 800 ? 4 : 2,
-            childAspectRatio: 1.8,
-            crossAxisSpacing: 16,
-            mainAxisSpacing: 16,
-            children: [
-              _buildEngagementCard(
-                  'Avg. Time on Site', '8m 34s', Icons.timer, Colors.purple),
-              _buildEngagementCard(
-                  'Pages per Session', '4.2', Icons.pages, Colors.blue),
-              _buildEngagementCard(
-                  'Return Rate', '68%', Icons.repeat, Colors.green),
-              _buildEngagementCard(
-                  'Downloads', '142', Icons.download, Colors.orange),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildEngagementCard(
-      String title, String value, IconData icon, Color color) {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: color.withOpacity(0.05),
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: color.withOpacity(0.2)),
-      ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(icon, color: color, size: 24),
-          const SizedBox(height: 8),
-          Text(
-            value,
-            style: AppTheme.titleMedium.copyWith(
-              fontWeight: FontWeight.bold,
-              color: color,
-            ),
-          ),
-          const SizedBox(height: 4),
-          Text(
-            title,
-            style: AppTheme.bodySmall.copyWith(
-              color: AppTheme.textSecondary,
-            ),
-            textAlign: TextAlign.center,
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildSimpleChart(List<Map<String, dynamic>> data, Color color) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      crossAxisAlignment: CrossAxisAlignment.end,
-      children: data.map((item) {
-        return Expanded(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              Container(
-                width: 20,
-                height: 120.0 * (item['value'] as double),
-                decoration: BoxDecoration(
-                  color: color,
-                  borderRadius: BorderRadius.circular(4),
-                ),
-              ),
-              const SizedBox(height: 8),
-              Text(
-                item['day'],
-                style: AppTheme.bodySmall.copyWith(
-                  color: AppTheme.textSecondary,
-                ),
-              ),
-            ],
-          ),
-        );
-      }).toList(),
     );
   }
 }

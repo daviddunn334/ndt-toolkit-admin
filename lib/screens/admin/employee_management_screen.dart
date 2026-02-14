@@ -84,21 +84,13 @@ class _EmployeeManagementScreenState extends State<EmployeeManagementScreen> {
     return Container(
       padding: const EdgeInsets.fromLTRB(24, 24, 24, 24),
       decoration: BoxDecoration(
-        gradient: LinearGradient(
-          colors: [
-            Colors.orange,
-            Colors.orange.withOpacity(0.8),
-          ],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-        ),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.orange.withOpacity(0.3),
-            blurRadius: 20,
-            offset: const Offset(0, 10),
+        color: AppTheme.surface,
+        border: Border(
+          bottom: BorderSide(
+            color: Colors.white.withOpacity(0.05),
+            width: 1,
           ),
-        ],
+        ),
       ),
       child: SafeArea(
         child: Row(
@@ -106,12 +98,12 @@ class _EmployeeManagementScreenState extends State<EmployeeManagementScreen> {
             Container(
               padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
-                color: Colors.white.withOpacity(0.2),
+                color: Colors.white.withOpacity(0.05),
                 borderRadius: BorderRadius.circular(12),
               ),
-              child: const Icon(
+              child: Icon(
                 Icons.people,
-                color: Colors.white,
+                color: AppTheme.yellowAccent,
                 size: 28,
               ),
             ),
@@ -120,10 +112,10 @@ class _EmployeeManagementScreenState extends State<EmployeeManagementScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
+                  Text(
                     'Employee Management',
                     style: TextStyle(
-                      color: Colors.white,
+                      color: AppTheme.textPrimary,
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
                     ),
@@ -132,7 +124,7 @@ class _EmployeeManagementScreenState extends State<EmployeeManagementScreen> {
                   Text(
                     'Manage team members and their information',
                     style: TextStyle(
-                      color: Colors.white.withOpacity(0.9),
+                      color: AppTheme.textSecondary,
                       fontSize: 16,
                     ),
                   ),
@@ -144,8 +136,8 @@ class _EmployeeManagementScreenState extends State<EmployeeManagementScreen> {
               icon: const Icon(Icons.person_add, size: 18),
               label: const Text('Add Employee'),
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.white,
-                foregroundColor: Colors.orange,
+                backgroundColor: AppTheme.yellowAccent,
+                foregroundColor: AppTheme.background,
                 elevation: 0,
                 padding:
                     const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
@@ -155,7 +147,7 @@ class _EmployeeManagementScreenState extends State<EmployeeManagementScreen> {
               Builder(
                 builder: (context) => IconButton(
                   onPressed: () => Scaffold.of(context).openDrawer(),
-                  icon: const Icon(Icons.menu, color: Colors.white, size: 28),
+                  icon: Icon(Icons.menu, color: AppTheme.textPrimary, size: 28),
                 ),
               ),
           ],
@@ -170,12 +162,12 @@ class _EmployeeManagementScreenState extends State<EmployeeManagementScreen> {
         Container(
           padding: const EdgeInsets.all(8),
           decoration: BoxDecoration(
-            color: Colors.orange.withOpacity(0.1),
+            color: AppTheme.yellowAccent.withOpacity(0.1),
             borderRadius: BorderRadius.circular(8),
           ),
           child: Icon(
             icon,
-            color: Colors.orange,
+            color: AppTheme.yellowAccent,
             size: 20,
           ),
         ),
@@ -229,15 +221,12 @@ class _EmployeeManagementScreenState extends State<EmployeeManagementScreen> {
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppTheme.surface,
         borderRadius: BorderRadius.circular(16),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.05),
-            blurRadius: 10,
-            offset: const Offset(0, 2),
-          ),
-        ],
+        border: Border.all(
+          color: Colors.white.withOpacity(0.05),
+          width: 1,
+        ),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -272,7 +261,7 @@ class _EmployeeManagementScreenState extends State<EmployeeManagementScreen> {
                     'Total Employees',
                     '$totalEmployees',
                     Icons.people,
-                    Colors.orange,
+                    AppTheme.yellowAccent,
                   ),
                   _buildStatCard(
                     'With Division',
@@ -290,7 +279,7 @@ class _EmployeeManagementScreenState extends State<EmployeeManagementScreen> {
                     'Groups',
                     '${groupCounts.keys.length}',
                     Icons.group,
-                    Colors.green,
+                    AppTheme.secondaryAccent,
                   ),
                 ],
               );
@@ -305,15 +294,12 @@ class _EmployeeManagementScreenState extends State<EmployeeManagementScreen> {
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppTheme.surface,
         borderRadius: BorderRadius.circular(16),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.05),
-            blurRadius: 10,
-            offset: const Offset(0, 2),
-          ),
-        ],
+        border: Border.all(
+          color: Colors.white.withOpacity(0.05),
+          width: 1,
+        ),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -421,15 +407,12 @@ class _EmployeeManagementScreenState extends State<EmployeeManagementScreen> {
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppTheme.surface,
         borderRadius: BorderRadius.circular(16),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.05),
-            blurRadius: 10,
-            offset: const Offset(0, 2),
-          ),
-        ],
+        border: Border.all(
+          color: Colors.white.withOpacity(0.05),
+          width: 1,
+        ),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -642,9 +625,9 @@ class _EmployeeManagementScreenState extends State<EmployeeManagementScreen> {
     final int hash = employee.firstName.hashCode + employee.lastName.hashCode;
 
     final List<Color> avatarColors = [
-      Colors.orange,
+      AppTheme.yellowAccent,
       Colors.blue,
-      Colors.green,
+      AppTheme.secondaryAccent,
       Colors.purple,
       Colors.red,
       Colors.teal,
@@ -676,14 +659,14 @@ class _EmployeeManagementScreenState extends State<EmployeeManagementScreen> {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
       decoration: BoxDecoration(
-        color: Colors.orange.withOpacity(0.1),
+        color: AppTheme.yellowAccent.withOpacity(0.1),
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: Colors.orange.withOpacity(0.3)),
+        border: Border.all(color: AppTheme.yellowAccent.withOpacity(0.3)),
       ),
       child: Text(
         group,
         style: AppTheme.bodySmall.copyWith(
-          color: Colors.orange,
+          color: AppTheme.yellowAccent,
           fontWeight: FontWeight.w600,
         ),
       ),
@@ -760,8 +743,8 @@ class _EmployeeManagementScreenState extends State<EmployeeManagementScreen> {
               icon: const Icon(Icons.person_add),
               label: const Text('Add Employee'),
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.orange,
-                foregroundColor: Colors.white,
+                backgroundColor: AppTheme.yellowAccent,
+                foregroundColor: AppTheme.background,
               ),
             ),
           ],
@@ -784,7 +767,7 @@ class _EmployeeManagementScreenState extends State<EmployeeManagementScreen> {
                 SnackBar(
                   content: Text(
                       '${result.firstName} ${result.lastName} added successfully'),
-                  backgroundColor: Colors.green,
+                  backgroundColor: AppTheme.secondaryAccent,
                 ),
               );
             }

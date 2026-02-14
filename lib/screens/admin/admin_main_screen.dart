@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '../../theme/app_theme.dart';
 import '../../widgets/admin_drawer.dart';
 import 'user_management_screen.dart';
-import 'news_editor_screen.dart';
+// import 'news_editor_screen.dart'; // REMOVED - Will be rebuilt
 import 'feedback_management_screen.dart';
 import 'pdf_management_screen.dart';
 import 'employee_management_screen.dart';
@@ -138,21 +138,13 @@ class _AdminMainScreenState extends State<AdminMainScreen> {
     return Container(
       padding: const EdgeInsets.fromLTRB(24, 24, 24, 24),
       decoration: BoxDecoration(
-        gradient: LinearGradient(
-          colors: [
-            AppTheme.primaryBlue,
-            AppTheme.primaryBlue.withOpacity(0.8),
-          ],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-        ),
-        boxShadow: [
-          BoxShadow(
-            color: AppTheme.primaryBlue.withOpacity(0.3),
-            blurRadius: 20,
-            offset: const Offset(0, 10),
+        color: AppTheme.surfaceElevated,
+        border: Border(
+          bottom: BorderSide(
+            color: Colors.white.withOpacity(0.05),
+            width: 1,
           ),
-        ],
+        ),
       ),
       child: SafeArea(
         child: Row(
@@ -160,12 +152,16 @@ class _AdminMainScreenState extends State<AdminMainScreen> {
             Container(
               padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
-                color: Colors.white.withOpacity(0.2),
+                color: AppTheme.primaryAccent.withOpacity(0.15),
                 borderRadius: BorderRadius.circular(12),
+                border: Border.all(
+                  color: AppTheme.primaryAccent.withOpacity(0.3),
+                  width: 1,
+                ),
               ),
               child: const Icon(
                 Icons.dashboard,
-                color: Colors.white,
+                color: AppTheme.primaryAccent,
                 size: 28,
               ),
             ),
@@ -177,7 +173,7 @@ class _AdminMainScreenState extends State<AdminMainScreen> {
                   const Text(
                     'Admin Dashboard',
                     style: TextStyle(
-                      color: Colors.white,
+                      color: AppTheme.textPrimary,
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
                     ),
@@ -186,7 +182,7 @@ class _AdminMainScreenState extends State<AdminMainScreen> {
                   Text(
                     'Manage your system and monitor performance',
                     style: TextStyle(
-                      color: Colors.white.withOpacity(0.9),
+                      color: AppTheme.textSecondary,
                       fontSize: 16,
                     ),
                   ),
@@ -197,7 +193,7 @@ class _AdminMainScreenState extends State<AdminMainScreen> {
               Builder(
                 builder: (context) => IconButton(
                   onPressed: () => Scaffold.of(context).openDrawer(),
-                  icon: const Icon(Icons.menu, color: Colors.white, size: 28),
+                  icon: const Icon(Icons.menu, color: AppTheme.textPrimary, size: 28),
                 ),
               ),
           ],
@@ -210,15 +206,12 @@ class _AdminMainScreenState extends State<AdminMainScreen> {
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppTheme.surface,
         borderRadius: BorderRadius.circular(16),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.05),
-            blurRadius: 10,
-            offset: const Offset(0, 2),
-          ),
-        ],
+        border: Border.all(
+          color: Colors.white.withOpacity(0.05),
+          width: 1,
+        ),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -251,12 +244,16 @@ class _AdminMainScreenState extends State<AdminMainScreen> {
               Container(
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
-                  color: AppTheme.primaryBlue.withOpacity(0.1),
+                  color: AppTheme.primaryAccent.withOpacity(0.15),
                   borderRadius: BorderRadius.circular(12),
+                  border: Border.all(
+                    color: AppTheme.primaryAccent.withOpacity(0.3),
+                    width: 1,
+                  ),
                 ),
                 child: Icon(
                   Icons.notifications_active,
-                  color: AppTheme.primaryBlue,
+                  color: AppTheme.primaryAccent,
                   size: 24,
                 ),
               ),
@@ -273,12 +270,16 @@ class _AdminMainScreenState extends State<AdminMainScreen> {
         Container(
           padding: const EdgeInsets.all(8),
           decoration: BoxDecoration(
-            color: AppTheme.primaryBlue.withOpacity(0.1),
+            color: AppTheme.primaryAccent.withOpacity(0.15),
             borderRadius: BorderRadius.circular(8),
+            border: Border.all(
+              color: AppTheme.primaryAccent.withOpacity(0.3),
+              width: 1,
+            ),
           ),
           child: Icon(
             icon,
-            color: AppTheme.primaryBlue,
+            color: AppTheme.primaryAccent,
             size: 20,
           ),
         ),
@@ -298,15 +299,12 @@ class _AdminMainScreenState extends State<AdminMainScreen> {
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppTheme.surface,
         borderRadius: BorderRadius.circular(16),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.05),
-            blurRadius: 10,
-            offset: const Offset(0, 2),
-          ),
-        ],
+        border: Border.all(
+          color: Colors.white.withOpacity(0.05),
+          width: 1,
+        ),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -333,25 +331,25 @@ class _AdminMainScreenState extends State<AdminMainScreen> {
                     'Total Reports',
                     stats['totalReports']?.toString() ?? '147',
                     Icons.assessment,
-                    AppTheme.primaryBlue,
+                    AppTheme.primaryAccent,
                   ),
                   _buildStatCard(
                     'Published Posts',
                     stats['publishedPosts']?.toString() ?? '23',
                     Icons.public,
-                    Colors.green,
+                    AppTheme.secondaryAccent,
                   ),
                   _buildStatCard(
                     'Active Users',
                     stats['activeUsers']?.toString() ?? '89',
                     Icons.people,
-                    Colors.orange,
+                    AppTheme.yellowAccent,
                   ),
                   _buildStatCard(
                     'Total Views',
                     stats['totalViews']?.toString() ?? '2.4K',
                     Icons.visibility,
-                    Colors.purple,
+                    AppTheme.accessoryAccent,
                   ),
                 ],
               );
@@ -367,9 +365,9 @@ class _AdminMainScreenState extends State<AdminMainScreen> {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: color.withOpacity(0.05),
+        color: color.withOpacity(0.08),
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: color.withOpacity(0.2)),
+        border: Border.all(color: color.withOpacity(0.3)),
       ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -400,15 +398,12 @@ class _AdminMainScreenState extends State<AdminMainScreen> {
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppTheme.surface,
         borderRadius: BorderRadius.circular(16),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.05),
-            blurRadius: 10,
-            offset: const Offset(0, 2),
-          ),
-        ],
+        border: Border.all(
+          color: Colors.white.withOpacity(0.05),
+          width: 1,
+        ),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -426,25 +421,25 @@ class _AdminMainScreenState extends State<AdminMainScreen> {
               _buildQuickActionCard(
                 'Create New Post',
                 Icons.add_circle,
-                AppTheme.primaryBlue,
+                AppTheme.primaryAccent,
                 () => setState(() => _selectedIndex = 4),
               ),
               _buildQuickActionCard(
                 'Manage Users',
                 Icons.people,
-                Colors.green,
+                AppTheme.secondaryAccent,
                 () => setState(() => _selectedIndex = 2),
               ),
               _buildQuickActionCard(
                 'View Reports',
                 Icons.assessment,
-                Colors.orange,
+                AppTheme.yellowAccent,
                 () => setState(() => _selectedIndex = 7),
               ),
               _buildQuickActionCard(
                 'System Analytics',
                 Icons.analytics,
-                Colors.purple,
+                AppTheme.accessoryAccent,
                 () => setState(() => _selectedIndex = 3),
               ),
             ],
@@ -462,9 +457,9 @@ class _AdminMainScreenState extends State<AdminMainScreen> {
       child: Container(
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
-          color: color.withOpacity(0.05),
+          color: color.withOpacity(0.08),
           borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: color.withOpacity(0.2)),
+          border: Border.all(color: color.withOpacity(0.3)),
         ),
         child: Row(
           children: [
@@ -493,15 +488,12 @@ class _AdminMainScreenState extends State<AdminMainScreen> {
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppTheme.surface,
         borderRadius: BorderRadius.circular(16),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.05),
-            blurRadius: 10,
-            offset: const Offset(0, 2),
-          ),
-        ],
+        border: Border.all(
+          color: Colors.white.withOpacity(0.05),
+          width: 1,
+        ),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -514,28 +506,28 @@ class _AdminMainScreenState extends State<AdminMainScreen> {
             'New report submitted',
             'Pipeline inspection report #147',
             Icons.assessment,
-            AppTheme.primaryBlue,
+            AppTheme.primaryAccent,
             '2 hours ago',
           ),
           _buildActivityItem(
             'User registered',
             'John Doe joined the system',
             Icons.person_add,
-            Colors.green,
+            AppTheme.secondaryAccent,
             '4 hours ago',
           ),
           _buildActivityItem(
             'Post published',
             'Safety update for equipment procedures',
             Icons.public,
-            Colors.orange,
+            AppTheme.yellowAccent,
             '1 day ago',
           ),
           _buildActivityItem(
             'System backup completed',
             'Daily backup successful',
             Icons.backup,
-            Colors.purple,
+            AppTheme.accessoryAccent,
             '1 day ago',
           ),
         ],
@@ -552,8 +544,12 @@ class _AdminMainScreenState extends State<AdminMainScreen> {
           Container(
             padding: const EdgeInsets.all(8),
             decoration: BoxDecoration(
-              color: color.withOpacity(0.1),
+              color: color.withOpacity(0.15),
               borderRadius: BorderRadius.circular(8),
+              border: Border.all(
+                color: color.withOpacity(0.3),
+                width: 1,
+              ),
             ),
             child: Icon(icon, color: color, size: 20),
           ),
@@ -593,15 +589,12 @@ class _AdminMainScreenState extends State<AdminMainScreen> {
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppTheme.surface,
         borderRadius: BorderRadius.circular(16),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.05),
-            blurRadius: 10,
-            offset: const Offset(0, 2),
-          ),
-        ],
+        border: Border.all(
+          color: Colors.white.withOpacity(0.05),
+          width: 1,
+        ),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -615,7 +608,7 @@ class _AdminMainScreenState extends State<AdminMainScreen> {
                   'Server Status',
                   'Online',
                   Icons.dns,
-                  Colors.green,
+                  AppTheme.secondaryAccent,
                   0.95,
                 ),
               ),
@@ -625,7 +618,7 @@ class _AdminMainScreenState extends State<AdminMainScreen> {
                   'Database',
                   'Healthy',
                   Icons.storage,
-                  Colors.blue,
+                  AppTheme.primaryAccent,
                   0.88,
                 ),
               ),
@@ -639,7 +632,7 @@ class _AdminMainScreenState extends State<AdminMainScreen> {
                   'Storage Usage',
                   '65% Used',
                   Icons.pie_chart,
-                  Colors.orange,
+                  AppTheme.yellowAccent,
                   0.65,
                 ),
               ),
@@ -649,7 +642,7 @@ class _AdminMainScreenState extends State<AdminMainScreen> {
                   'Response Time',
                   '< 200ms',
                   Icons.speed,
-                  Colors.purple,
+                  AppTheme.accessoryAccent,
                   0.92,
                 ),
               ),
@@ -665,9 +658,9 @@ class _AdminMainScreenState extends State<AdminMainScreen> {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: color.withOpacity(0.05),
+        color: color.withOpacity(0.08),
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: color.withOpacity(0.2)),
+        border: Border.all(color: color.withOpacity(0.3)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -767,7 +760,20 @@ class _AdminMainScreenState extends State<AdminMainScreen> {
   }
 
   Widget _buildCreatePost() {
-    return const NewsEditorScreen();
+    // REMOVED - Will be rebuilt
+    return Scaffold(
+      backgroundColor: AppTheme.background,
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(Icons.construction, size: 64, color: AppTheme.textSecondary),
+            const SizedBox(height: 16),
+            Text('Create Post - Coming Soon', style: AppTheme.titleMedium),
+          ],
+        ),
+      ),
+    );
   }
 
   Widget _buildDrafts() {
@@ -856,21 +862,13 @@ class _AdminMainScreenState extends State<AdminMainScreen> {
     return Container(
       padding: const EdgeInsets.fromLTRB(24, 24, 24, 24),
       decoration: BoxDecoration(
-        gradient: LinearGradient(
-          colors: [
-            Colors.blue,
-            Colors.blue.withOpacity(0.8),
-          ],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-        ),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.blue.withOpacity(0.3),
-            blurRadius: 20,
-            offset: const Offset(0, 10),
+        color: AppTheme.surfaceElevated,
+        border: Border(
+          bottom: BorderSide(
+            color: Colors.white.withOpacity(0.05),
+            width: 1,
           ),
-        ],
+        ),
       ),
       child: SafeArea(
         child: Row(
@@ -878,12 +876,16 @@ class _AdminMainScreenState extends State<AdminMainScreen> {
             Container(
               padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
-                color: Colors.white.withOpacity(0.2),
+                color: AppTheme.primaryAccent.withOpacity(0.15),
                 borderRadius: BorderRadius.circular(12),
+                border: Border.all(
+                  color: AppTheme.primaryAccent.withOpacity(0.3),
+                  width: 1,
+                ),
               ),
               child: const Icon(
                 Icons.article,
-                color: Colors.white,
+                color: AppTheme.primaryAccent,
                 size: 28,
               ),
             ),
@@ -895,7 +897,7 @@ class _AdminMainScreenState extends State<AdminMainScreen> {
                   const Text(
                     'News Management',
                     style: TextStyle(
-                      color: Colors.white,
+                      color: AppTheme.textPrimary,
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
                     ),
@@ -904,7 +906,7 @@ class _AdminMainScreenState extends State<AdminMainScreen> {
                   Text(
                     'Create, edit, and manage news posts and updates',
                     style: TextStyle(
-                      color: Colors.white.withOpacity(0.9),
+                      color: AppTheme.textSecondary,
                       fontSize: 16,
                     ),
                   ),
@@ -916,8 +918,8 @@ class _AdminMainScreenState extends State<AdminMainScreen> {
               icon: const Icon(Icons.add, size: 18),
               label: const Text('Create Post'),
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.white,
-                foregroundColor: Colors.blue,
+                backgroundColor: AppTheme.primaryAccent,
+                foregroundColor: Colors.white,
                 elevation: 0,
                 padding:
                     const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
@@ -927,7 +929,7 @@ class _AdminMainScreenState extends State<AdminMainScreen> {
               Builder(
                 builder: (context) => IconButton(
                   onPressed: () => Scaffold.of(context).openDrawer(),
-                  icon: const Icon(Icons.menu, color: Colors.white, size: 28),
+                  icon: const Icon(Icons.menu, color: AppTheme.textPrimary, size: 28),
                 ),
               ),
           ],
@@ -940,15 +942,12 @@ class _AdminMainScreenState extends State<AdminMainScreen> {
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppTheme.surface,
         borderRadius: BorderRadius.circular(16),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.05),
-            blurRadius: 10,
-            offset: const Offset(0, 2),
-          ),
-        ],
+        border: Border.all(
+          color: Colors.white.withOpacity(0.05),
+          width: 1,
+        ),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -975,25 +974,25 @@ class _AdminMainScreenState extends State<AdminMainScreen> {
                     'Total Posts',
                     '${stats['totalPosts'] ?? 0}',
                     Icons.article,
-                    Colors.blue,
+                    AppTheme.primaryAccent,
                   ),
                   _buildStatCard(
                     'Published',
                     '${stats['publishedPosts'] ?? 0}',
                     Icons.public,
-                    Colors.green,
+                    AppTheme.secondaryAccent,
                   ),
                   _buildStatCard(
                     'Drafts',
                     '${stats['draftPosts'] ?? 0}',
                     Icons.drafts,
-                    Colors.orange,
+                    AppTheme.yellowAccent,
                   ),
                   _buildStatCard(
                     'Total Views',
                     '${stats['totalViews'] ?? 0}',
                     Icons.visibility,
-                    Colors.purple,
+                    AppTheme.accessoryAccent,
                   ),
                 ],
               );
@@ -1008,15 +1007,12 @@ class _AdminMainScreenState extends State<AdminMainScreen> {
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppTheme.surface,
         borderRadius: BorderRadius.circular(16),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.05),
-            blurRadius: 10,
-            offset: const Offset(0, 2),
-          ),
-        ],
+        border: Border.all(
+          color: Colors.white.withOpacity(0.05),
+          width: 1,
+        ),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -1045,15 +1041,12 @@ class _AdminMainScreenState extends State<AdminMainScreen> {
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppTheme.surface,
         borderRadius: BorderRadius.circular(16),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.05),
-            blurRadius: 10,
-            offset: const Offset(0, 2),
-          ),
-        ],
+        border: Border.all(
+          color: Colors.white.withOpacity(0.05),
+          width: 1,
+        ),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -1129,9 +1122,12 @@ class _AdminMainScreenState extends State<AdminMainScreen> {
       margin: const EdgeInsets.only(bottom: 16),
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: AppTheme.background,
+        color: AppTheme.surfaceElevated,
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: AppTheme.divider),
+        border: Border.all(
+          color: Colors.white.withOpacity(0.08),
+          width: 1,
+        ),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -1141,8 +1137,12 @@ class _AdminMainScreenState extends State<AdminMainScreen> {
               Container(
                 padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
-                  color: update.category.color.withOpacity(0.1),
+                  color: update.category.color.withOpacity(0.15),
                   borderRadius: BorderRadius.circular(8),
+                  border: Border.all(
+                    color: update.category.color.withOpacity(0.3),
+                    width: 1,
+                  ),
                 ),
                 child: Icon(
                   update.icon,
@@ -1285,11 +1285,9 @@ class _AdminMainScreenState extends State<AdminMainScreen> {
   void _handleNewsAction(String action, NewsUpdate update) {
     switch (action) {
       case 'edit':
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => NewsEditorScreen(update: update),
-          ),
+        // REMOVED - Will be rebuilt
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('News editor will be rebuilt')),
         );
         break;
       case 'delete':

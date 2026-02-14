@@ -116,12 +116,14 @@ class _PdfManagementScreenState extends State<PdfManagementScreen> {
     final confirm = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Delete PDF'),
-        content: Text('Are you sure you want to delete "$filename"?'),
+        backgroundColor: AppTheme.surface,
+        title: Text('Delete PDF', style: TextStyle(color: AppTheme.textPrimary)),
+        content: Text('Are you sure you want to delete "$filename"?',
+            style: TextStyle(color: AppTheme.textSecondary)),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, false),
-            child: const Text('Cancel'),
+            child: Text('Cancel', style: TextStyle(color: AppTheme.textSecondary)),
           ),
           TextButton(
             onPressed: () => Navigator.pop(context, true),
@@ -199,23 +201,33 @@ class _PdfManagementScreenState extends State<PdfManagementScreen> {
     final newFilename = await showDialog<String>(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Rename PDF'),
+        backgroundColor: AppTheme.surface,
+        title: Text('Rename PDF', style: TextStyle(color: AppTheme.textPrimary)),
         content: TextField(
           controller: controller,
-          decoration: const InputDecoration(
+          style: TextStyle(color: AppTheme.textPrimary),
+          decoration: InputDecoration(
             labelText: 'New filename',
+            labelStyle: TextStyle(color: AppTheme.textSecondary),
             hintText: 'Enter new filename',
+            hintStyle: TextStyle(color: AppTheme.textSecondary.withOpacity(0.5)),
+            enabledBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: AppTheme.textSecondary.withOpacity(0.3)),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: AppTheme.secondaryAccent),
+            ),
           ),
           autofocus: true,
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('Cancel'),
+            child: Text('Cancel', style: TextStyle(color: AppTheme.textSecondary)),
           ),
           TextButton(
             onPressed: () => Navigator.pop(context, controller.text.trim()),
-            child: const Text('Rename'),
+            child: Text('Rename', style: TextStyle(color: AppTheme.secondaryAccent)),
           ),
         ],
       ),
@@ -244,23 +256,34 @@ class _PdfManagementScreenState extends State<PdfManagementScreen> {
     final companyName = await showDialog<String>(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Create Company Folder'),
+        backgroundColor: AppTheme.surface,
+        title: Text('Create Company Folder',
+            style: TextStyle(color: AppTheme.textPrimary)),
         content: TextField(
           controller: controller,
-          decoration: const InputDecoration(
+          style: TextStyle(color: AppTheme.textPrimary),
+          decoration: InputDecoration(
             labelText: 'Company name',
+            labelStyle: TextStyle(color: AppTheme.textSecondary),
             hintText: 'Enter company name',
+            hintStyle: TextStyle(color: AppTheme.textSecondary.withOpacity(0.5)),
+            enabledBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: AppTheme.textSecondary.withOpacity(0.3)),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: AppTheme.secondaryAccent),
+            ),
           ),
           autofocus: true,
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('Cancel'),
+            child: Text('Cancel', style: TextStyle(color: AppTheme.textSecondary)),
           ),
           TextButton(
             onPressed: () => Navigator.pop(context, controller.text.trim()),
-            child: const Text('Create'),
+            child: Text('Create', style: TextStyle(color: AppTheme.secondaryAccent)),
           ),
         ],
       ),
@@ -295,7 +318,7 @@ class _PdfManagementScreenState extends State<PdfManagementScreen> {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(message),
-        backgroundColor: isError ? Colors.red : Colors.green,
+        backgroundColor: isError ? Colors.red : AppTheme.secondaryAccent,
       ),
     );
   }
@@ -313,17 +336,7 @@ class _PdfManagementScreenState extends State<PdfManagementScreen> {
           Expanded(
             child: SingleChildScrollView(
               padding: const EdgeInsets.all(24),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // Statistics Overview
-                  _buildStatisticsSection(),
-                  const SizedBox(height: 32),
-
-                  // Companies and PDFs
-                  _buildMainContent(),
-                ],
-              ),
+              child: _buildMainContent(),
             ),
           ),
         ],
@@ -335,21 +348,13 @@ class _PdfManagementScreenState extends State<PdfManagementScreen> {
     return Container(
       padding: const EdgeInsets.fromLTRB(24, 24, 24, 24),
       decoration: BoxDecoration(
-        gradient: LinearGradient(
-          colors: [
-            Colors.teal,
-            Colors.teal.withOpacity(0.8),
-          ],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-        ),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.teal.withOpacity(0.3),
-            blurRadius: 20,
-            offset: const Offset(0, 10),
+        color: AppTheme.surface,
+        border: Border(
+          bottom: BorderSide(
+            color: AppTheme.textPrimary.withOpacity(0.05),
+            width: 1,
           ),
-        ],
+        ),
       ),
       child: SafeArea(
         child: Row(
@@ -357,12 +362,12 @@ class _PdfManagementScreenState extends State<PdfManagementScreen> {
             Container(
               padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
-                color: Colors.white.withOpacity(0.2),
+                color: AppTheme.secondaryAccent.withOpacity(0.1),
                 borderRadius: BorderRadius.circular(12),
               ),
-              child: const Icon(
+              child: Icon(
                 Icons.picture_as_pdf,
-                color: Colors.white,
+                color: AppTheme.secondaryAccent,
                 size: 28,
               ),
             ),
@@ -371,10 +376,10 @@ class _PdfManagementScreenState extends State<PdfManagementScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
+                  Text(
                     'PDF Management',
                     style: TextStyle(
-                      color: Colors.white,
+                      color: AppTheme.textPrimary,
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
                     ),
@@ -383,50 +388,75 @@ class _PdfManagementScreenState extends State<PdfManagementScreen> {
                   Text(
                     'Manage company documents and procedures',
                     style: TextStyle(
-                      color: Colors.white.withOpacity(0.9),
+                      color: AppTheme.textSecondary,
                       fontSize: 16,
                     ),
                   ),
                 ],
               ),
             ),
-            ElevatedButton.icon(
-              onPressed: _createCompanyFolder,
-              icon: const Icon(Icons.create_new_folder, size: 18),
-              label: const Text('New Company'),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.white,
-                foregroundColor: Colors.teal,
-                elevation: 0,
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            Container(
+              decoration: BoxDecoration(
+                color: AppTheme.secondaryAccent.withOpacity(0.1),
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(
+                  color: AppTheme.secondaryAccent.withOpacity(0.3),
+                  width: 1,
+                ),
+              ),
+              child: Material(
+                color: Colors.transparent,
+                child: InkWell(
+                  onTap: _createCompanyFolder,
+                  borderRadius: BorderRadius.circular(12),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(Icons.create_new_folder,
+                            size: 18, color: AppTheme.secondaryAccent),
+                        const SizedBox(width: 8),
+                        Text(
+                          'New Company',
+                          style: TextStyle(
+                            color: AppTheme.secondaryAccent,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
               ),
             ),
-            if (MediaQuery.of(context).size.width < 1200)
+            if (MediaQuery.of(context).size.width < 1200) ...[
+              const SizedBox(width: 16),
               Builder(
                 builder: (context) => IconButton(
                   onPressed: () => Scaffold.of(context).openDrawer(),
-                  icon: const Icon(Icons.menu, color: Colors.white, size: 28),
+                  icon: Icon(Icons.menu, color: AppTheme.textPrimary, size: 28),
                 ),
               ),
+            ],
           ],
         ),
       ),
     );
   }
 
-  Widget _buildSectionHeader(String title, IconData icon) {
+  Widget _buildSectionHeader(String title, IconData icon, Color color) {
     return Row(
       children: [
         Container(
           padding: const EdgeInsets.all(8),
           decoration: BoxDecoration(
-            color: Colors.teal.withOpacity(0.1),
+            color: color.withOpacity(0.1),
             borderRadius: BorderRadius.circular(8),
           ),
           child: Icon(
             icon,
-            color: Colors.teal,
+            color: color,
             size: 20,
           ),
         ),
@@ -439,102 +469,6 @@ class _PdfManagementScreenState extends State<PdfManagementScreen> {
           ),
         ),
       ],
-    );
-  }
-
-  Widget _buildStatCard(
-      String title, String value, IconData icon, Color color) {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: color.withOpacity(0.05),
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: color.withOpacity(0.2)),
-      ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(icon, color: color, size: 28),
-          const SizedBox(height: 8),
-          Text(
-            value,
-            style: AppTheme.titleLarge.copyWith(
-              fontWeight: FontWeight.bold,
-              color: color,
-            ),
-          ),
-          const SizedBox(height: 4),
-          Text(
-            title,
-            style: AppTheme.bodySmall.copyWith(
-              color: AppTheme.textSecondary,
-            ),
-            textAlign: TextAlign.center,
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildStatisticsSection() {
-    final totalSize =
-        _pdfs.fold<int>(0, (sum, pdf) => sum + (pdf['size'] as int? ?? 0));
-    final totalSizeMB = (totalSize / (1024 * 1024)).toStringAsFixed(1);
-
-    return Container(
-      padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.05),
-            blurRadius: 10,
-            offset: const Offset(0, 2),
-          ),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          _buildSectionHeader('Document Overview', Icons.analytics),
-          const SizedBox(height: 20),
-          GridView.count(
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            crossAxisCount: MediaQuery.of(context).size.width > 800 ? 4 : 2,
-            childAspectRatio: 1.2,
-            crossAxisSpacing: 16,
-            mainAxisSpacing: 16,
-            children: [
-              _buildStatCard(
-                'Total Companies',
-                '${_companies.length}',
-                Icons.business,
-                Colors.teal,
-              ),
-              _buildStatCard(
-                'Total PDFs',
-                '${_pdfs.length}',
-                Icons.picture_as_pdf,
-                Colors.blue,
-              ),
-              _buildStatCard(
-                'Storage Used',
-                '${totalSizeMB}MB',
-                Icons.storage,
-                Colors.orange,
-              ),
-              _buildStatCard(
-                'Selected Company',
-                _selectedCompany?.toUpperCase() ?? 'None',
-                Icons.folder,
-                Colors.purple,
-              ),
-            ],
-          ),
-        ],
-      ),
     );
   }
 
@@ -562,23 +496,21 @@ class _PdfManagementScreenState extends State<PdfManagementScreen> {
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppTheme.surface,
         borderRadius: BorderRadius.circular(16),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.05),
-            blurRadius: 10,
-            offset: const Offset(0, 2),
-          ),
-        ],
+        border: Border.all(
+          color: AppTheme.textPrimary.withOpacity(0.05),
+          width: 1,
+        ),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _buildSectionHeader('Companies', Icons.business),
+          _buildSectionHeader('Companies', Icons.business, AppTheme.secondaryAccent),
           const SizedBox(height: 20),
           if (_isLoading)
-            const Center(child: CircularProgressIndicator())
+            Center(
+                child: CircularProgressIndicator(color: AppTheme.secondaryAccent))
           else if (_companies.isEmpty)
             _buildEmptyState(
               icon: Icons.business,
@@ -602,12 +534,12 @@ class _PdfManagementScreenState extends State<PdfManagementScreen> {
                       padding: const EdgeInsets.all(12),
                       decoration: BoxDecoration(
                         color: isSelected
-                            ? Colors.teal.withOpacity(0.1)
+                            ? AppTheme.secondaryAccent.withOpacity(0.1)
                             : Colors.transparent,
                         borderRadius: BorderRadius.circular(8),
                         border: Border.all(
                           color: isSelected
-                              ? Colors.teal.withOpacity(0.3)
+                              ? AppTheme.secondaryAccent.withOpacity(0.3)
                               : Colors.transparent,
                         ),
                       ),
@@ -616,7 +548,7 @@ class _PdfManagementScreenState extends State<PdfManagementScreen> {
                           Icon(
                             Icons.folder,
                             color: isSelected
-                                ? Colors.teal
+                                ? AppTheme.secondaryAccent
                                 : AppTheme.textSecondary,
                             size: 20,
                           ),
@@ -629,7 +561,7 @@ class _PdfManagementScreenState extends State<PdfManagementScreen> {
                                     ? FontWeight.w600
                                     : FontWeight.normal,
                                 color: isSelected
-                                    ? Colors.teal
+                                    ? AppTheme.secondaryAccent
                                     : AppTheme.textPrimary,
                               ),
                             ),
@@ -638,7 +570,7 @@ class _PdfManagementScreenState extends State<PdfManagementScreen> {
                             Icon(
                               Icons.arrow_forward_ios,
                               size: 14,
-                              color: Colors.teal,
+                              color: AppTheme.secondaryAccent,
                             ),
                         ],
                       ),
@@ -656,15 +588,12 @@ class _PdfManagementScreenState extends State<PdfManagementScreen> {
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppTheme.surface,
         borderRadius: BorderRadius.circular(16),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.05),
-            blurRadius: 10,
-            offset: const Offset(0, 2),
-          ),
-        ],
+        border: Border.all(
+          color: AppTheme.textPrimary.withOpacity(0.05),
+          width: 1,
+        ),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -677,25 +606,54 @@ class _PdfManagementScreenState extends State<PdfManagementScreen> {
                       ? '${_selectedCompany!.toUpperCase()} Documents'
                       : 'Documents',
                   Icons.picture_as_pdf,
+                  AppTheme.secondaryAccent,
                 ),
               ),
               if (_selectedCompany != null)
-                ElevatedButton.icon(
-                  onPressed: _isUploading ? null : _uploadPdf,
-                  icon: _isUploading
-                      ? const SizedBox(
-                          width: 16,
-                          height: 16,
-                          child: CircularProgressIndicator(strokeWidth: 2),
-                        )
-                      : const Icon(Icons.upload_file, size: 18),
-                  label: const Text('Upload PDF'),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.teal,
-                    foregroundColor: Colors.white,
-                    elevation: 0,
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                Container(
+                  decoration: BoxDecoration(
+                    color: AppTheme.secondaryAccent.withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(
+                      color: AppTheme.secondaryAccent.withOpacity(0.3),
+                      width: 1,
+                    ),
+                  ),
+                  child: Material(
+                    color: Colors.transparent,
+                    child: InkWell(
+                      onTap: _isUploading ? null : _uploadPdf,
+                      borderRadius: BorderRadius.circular(12),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 16, vertical: 12),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            if (_isUploading)
+                              SizedBox(
+                                width: 16,
+                                height: 16,
+                                child: CircularProgressIndicator(
+                                  strokeWidth: 2,
+                                  color: AppTheme.secondaryAccent,
+                                ),
+                              )
+                            else
+                              Icon(Icons.upload_file,
+                                  size: 18, color: AppTheme.secondaryAccent),
+                            const SizedBox(width: 8),
+                            Text(
+                              'Upload PDF',
+                              style: TextStyle(
+                                color: AppTheme.secondaryAccent,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
                   ),
                 ),
             ],
@@ -710,9 +668,11 @@ class _PdfManagementScreenState extends State<PdfManagementScreen> {
                   _searchQuery = value;
                 });
               },
+              style: TextStyle(color: AppTheme.textPrimary),
               decoration: InputDecoration(
                 hintText: 'Search PDFs...',
-                prefixIcon: const Icon(Icons.search),
+                hintStyle: TextStyle(color: AppTheme.textSecondary),
+                prefixIcon: Icon(Icons.search, color: AppTheme.textSecondary),
                 suffixIcon: _searchQuery.isNotEmpty
                     ? IconButton(
                         onPressed: () {
@@ -720,7 +680,7 @@ class _PdfManagementScreenState extends State<PdfManagementScreen> {
                             _searchQuery = '';
                           });
                         },
-                        icon: const Icon(Icons.clear),
+                        icon: Icon(Icons.clear, color: AppTheme.textSecondary),
                       )
                     : null,
                 filled: true,
@@ -743,7 +703,8 @@ class _PdfManagementScreenState extends State<PdfManagementScreen> {
               subtitle: 'Choose a company from the left to view documents',
             )
           else if (_isLoading)
-            const Center(child: CircularProgressIndicator())
+            Center(
+                child: CircularProgressIndicator(color: AppTheme.secondaryAccent))
           else if (_filteredPdfs.isEmpty)
             _buildEmptyState(
               icon: Icons.picture_as_pdf,
@@ -776,7 +737,10 @@ class _PdfManagementScreenState extends State<PdfManagementScreen> {
       decoration: BoxDecoration(
         color: AppTheme.background,
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: AppTheme.divider),
+        border: Border.all(
+          color: AppTheme.textPrimary.withOpacity(0.05),
+          width: 1,
+        ),
       ),
       child: Row(
         children: [
@@ -786,7 +750,7 @@ class _PdfManagementScreenState extends State<PdfManagementScreen> {
               color: Colors.red.withOpacity(0.1),
               borderRadius: BorderRadius.circular(8),
             ),
-            child: Icon(
+            child: const Icon(
               Icons.picture_as_pdf,
               color: Colors.red,
               size: 24,
@@ -801,6 +765,7 @@ class _PdfManagementScreenState extends State<PdfManagementScreen> {
                   pdf['name'] ?? 'Unknown',
                   style: AppTheme.bodyMedium.copyWith(
                     fontWeight: FontWeight.w600,
+                    color: AppTheme.textPrimary,
                   ),
                 ),
                 const SizedBox(height: 4),
@@ -828,44 +793,51 @@ class _PdfManagementScreenState extends State<PdfManagementScreen> {
           ),
           PopupMenuButton<String>(
             onSelected: (value) => _handlePdfAction(value, pdf),
+            icon: Icon(Icons.more_vert, color: AppTheme.textSecondary),
+            color: AppTheme.surface,
             itemBuilder: (context) => [
-              const PopupMenuItem(
+              PopupMenuItem(
                 value: 'view',
                 child: Row(
                   children: [
-                    Icon(Icons.visibility, size: 16),
-                    SizedBox(width: 8),
-                    Text('View'),
+                    Icon(Icons.visibility,
+                        size: 16, color: AppTheme.textSecondary),
+                    const SizedBox(width: 8),
+                    Text('View', style: TextStyle(color: AppTheme.textPrimary)),
                   ],
                 ),
               ),
-              const PopupMenuItem(
+              PopupMenuItem(
                 value: 'download',
                 child: Row(
                   children: [
-                    Icon(Icons.download, size: 16),
-                    SizedBox(width: 8),
-                    Text('Download'),
+                    Icon(Icons.download,
+                        size: 16, color: AppTheme.textSecondary),
+                    const SizedBox(width: 8),
+                    Text('Download',
+                        style: TextStyle(color: AppTheme.textPrimary)),
                   ],
                 ),
               ),
-              const PopupMenuItem(
+              PopupMenuItem(
                 value: 'replace',
                 child: Row(
                   children: [
-                    Icon(Icons.swap_horiz, size: 16),
-                    SizedBox(width: 8),
-                    Text('Replace'),
+                    Icon(Icons.swap_horiz,
+                        size: 16, color: AppTheme.textSecondary),
+                    const SizedBox(width: 8),
+                    Text('Replace',
+                        style: TextStyle(color: AppTheme.textPrimary)),
                   ],
                 ),
               ),
-              const PopupMenuItem(
+              PopupMenuItem(
                 value: 'rename',
                 child: Row(
                   children: [
-                    Icon(Icons.edit, size: 16),
-                    SizedBox(width: 8),
-                    Text('Rename'),
+                    Icon(Icons.edit, size: 16, color: AppTheme.textSecondary),
+                    const SizedBox(width: 8),
+                    Text('Rename', style: TextStyle(color: AppTheme.textPrimary)),
                   ],
                 ),
               ),

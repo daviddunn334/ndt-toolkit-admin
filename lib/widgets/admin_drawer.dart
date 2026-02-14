@@ -18,21 +18,28 @@ class AdminDrawer extends StatelessWidget {
     final authService = AuthService();
 
     return Container(
-      color: Colors.white,
+      decoration: BoxDecoration(
+        color: AppTheme.background,
+        border: Border(
+          right: BorderSide(
+            color: Colors.white.withOpacity(0.05),
+            width: 1,
+          ),
+        ),
+      ),
       child: Column(
         children: [
           // Header
           Container(
             padding: const EdgeInsets.symmetric(vertical: 40, horizontal: 16),
             decoration: BoxDecoration(
-              gradient: AppTheme.primaryGradient,
-              boxShadow: [
-                BoxShadow(
-                  color: AppTheme.primaryNavy.withOpacity(0.3),
-                  blurRadius: 10,
-                  offset: const Offset(0, 4),
+              color: AppTheme.surfaceElevated,
+              border: Border(
+                bottom: BorderSide(
+                  color: Colors.white.withOpacity(0.05),
+                  width: 1,
                 ),
-              ],
+              ),
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -43,8 +50,12 @@ class AdminDrawer extends StatelessWidget {
                   height: 70,
                   padding: const EdgeInsets.all(8),
                   decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.15),
+                    color: Colors.white.withOpacity(0.08),
                     borderRadius: BorderRadius.circular(16),
+                    border: Border.all(
+                      color: Colors.white.withOpacity(0.1),
+                      width: 1,
+                    ),
                   ),
                   child: Image.asset(
                     'assets/logos/logo_main_white.png',
@@ -58,7 +69,7 @@ class AdminDrawer extends StatelessWidget {
                     const Text(
                       'Admin Panel',
                       style: TextStyle(
-                        color: Colors.white,
+                        color: AppTheme.textPrimary,
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
                         letterSpacing: 0.5,
@@ -69,7 +80,7 @@ class AdminDrawer extends StatelessWidget {
                     Text(
                       'Integrity Specialists',
                       style: TextStyle(
-                        color: Colors.white.withOpacity(0.85),
+                        color: AppTheme.textSecondary.withOpacity(0.85),
                         fontSize: 12,
                         letterSpacing: 0.2,
                       ),
@@ -143,18 +154,21 @@ class AdminDrawer extends StatelessWidget {
                   3,
                   isLargeScreen,
                 ),
-                const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                  child: Divider(height: 1),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  child: Divider(
+                    height: 1,
+                    color: Colors.white.withOpacity(0.05),
+                  ),
                 ),
-                const Padding(
-                  padding: EdgeInsets.only(left: 16, top: 8, bottom: 4),
+                Padding(
+                  padding: const EdgeInsets.only(left: 16, top: 8, bottom: 4),
                   child: Text(
                     'CONTENT',
                     style: TextStyle(
                       fontSize: 12,
                       fontWeight: FontWeight.w500,
-                      color: AppTheme.textSecondary,
+                      color: AppTheme.textMuted,
                       letterSpacing: 1.2,
                     ),
                   ),
@@ -183,20 +197,12 @@ class AdminDrawer extends StatelessWidget {
                   6,
                   isLargeScreen,
                 ),
-                const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                  child: Divider(height: 1),
-                ),
-                _buildMenuItem(
-                  context,
-                  'Back to App',
-                  Icons.arrow_back_outlined,
-                  Icons.arrow_back,
-                  -1,
-                  isLargeScreen,
-                  onTap: () {
-                    Navigator.of(context).popUntil((route) => route.isFirst);
-                  },
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  child: Divider(
+                    height: 1,
+                    color: Colors.white.withOpacity(0.05),
+                  ),
                 ),
               ],
             ),
@@ -206,6 +212,14 @@ class AdminDrawer extends StatelessWidget {
           Container(
             width: double.infinity,
             padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              border: Border(
+                top: BorderSide(
+                  color: Colors.white.withOpacity(0.05),
+                  width: 1,
+                ),
+              ),
+            ),
             child: ElevatedButton.icon(
               onPressed: () async {
                 try {
@@ -218,7 +232,7 @@ class AdminDrawer extends StatelessWidget {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
                         content: Text('Error signing out: $e'),
-                        backgroundColor: Colors.red,
+                        backgroundColor: AppTheme.accessoryAccent,
                       ),
                     );
                   }
@@ -233,7 +247,7 @@ class AdminDrawer extends StatelessWidget {
                 ),
               ),
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.red.shade600,
+                backgroundColor: AppTheme.accessoryAccent,
                 padding: const EdgeInsets.symmetric(vertical: 12),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
@@ -262,13 +276,19 @@ class AdminDrawer extends StatelessWidget {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
         color: isSelected
-            ? AppTheme.primaryBlue.withOpacity(0.1)
+            ? AppTheme.primaryAccent.withOpacity(0.15)
             : Colors.transparent,
+        border: isSelected
+            ? Border.all(
+                color: AppTheme.primaryAccent.withOpacity(0.3),
+                width: 1,
+              )
+            : null,
       ),
       child: ListTile(
         leading: Icon(
           isSelected ? filledIcon : outlinedIcon,
-          color: isSelected ? AppTheme.primaryBlue : AppTheme.textSecondary,
+          color: isSelected ? AppTheme.primaryAccent : AppTheme.textSecondary,
           size: 22,
         ),
         title: Text(
@@ -276,7 +296,7 @@ class AdminDrawer extends StatelessWidget {
           style: TextStyle(
             fontSize: 15,
             fontWeight: isSelected ? FontWeight.w600 : FontWeight.w500,
-            color: isSelected ? AppTheme.primaryBlue : AppTheme.textPrimary,
+            color: isSelected ? AppTheme.primaryAccent : AppTheme.textPrimary,
           ),
         ),
         shape: RoundedRectangleBorder(
