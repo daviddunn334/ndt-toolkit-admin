@@ -6,11 +6,13 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:image_picker/image_picker.dart';
 import '../models/photo_identification.dart';
 import 'performance_service.dart';
+import 'admin_metrics_service.dart';
 
 /// Service for handling defect photo identification with async processing
 class DefectIdentifierService {
   final FirebaseStorage _storage = FirebaseStorage.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final AdminMetricsService _metrics = AdminMetricsService();
 
   /// Uploads a photo to storage for identification
   /// Returns the download URL
@@ -58,6 +60,7 @@ class DefectIdentifierService {
           // Get download URL
           final downloadUrl = await ref.getDownloadURL();
           print('Photo uploaded successfully: $downloadUrl');
+          await _metrics.incrementStorageUpload(source: 'defect_photo');
           
           return downloadUrl;
         } catch (e) {

@@ -201,7 +201,7 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
           // Feature highlights
           _buildFeatureItem(Icons.shield_outlined, 'User Management'),
           const SizedBox(height: 20),
-          _buildFeatureItem(Icons.analytics_outlined, 'Analytics Dashboard'),
+          _buildFeatureItem(Icons.analytics_outlined, 'Analytics'),
           const SizedBox(height: 20),
           _buildFeatureItem(Icons.article_outlined, 'Content Management'),
         ],

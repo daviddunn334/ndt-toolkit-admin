@@ -68,641 +68,26 @@ class _AdminMainScreenState extends State<AdminMainScreen> {
   Widget _buildBody() {
     switch (_selectedIndex) {
       case 0:
-        return _buildDashboard();
+        return _buildAnalytics();
       case 1:
         return _buildNewsManagement();
       case 2:
         return _buildUserManagement();
       case 3:
-        return _buildAnalytics();
-      case 4:
-        return _buildCreatePost();
-      case 5:
-        return _buildDrafts();
-      case 6:
-        return _buildPublished();
-      case 7:
-        return _buildFeedbackManagement();
-      case 8:
-        return _buildPdfManagement();
-      case 9:
         return _buildEmployeeManagement();
+      case 4:
+        return _buildFeedbackManagement();
+      case 5:
+        return _buildPdfManagement();
+      case 6:
+        return _buildCreatePost();
+      case 7:
+        return _buildDrafts();
+      case 8:
+        return _buildPublished();
       default:
-        return _buildDashboard();
+        return _buildAnalytics();
     }
-  }
-
-  Widget _buildDashboard() {
-    return Scaffold(
-      backgroundColor: AppTheme.background,
-      body: Column(
-        children: [
-          // Modern Header
-          _buildModernDashboardHeader(),
-
-          // Dashboard Content
-          Expanded(
-            child: SingleChildScrollView(
-              padding: const EdgeInsets.all(24),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // Welcome Section
-                  _buildWelcomeSection(),
-                  const SizedBox(height: 32),
-
-                  // Stats Overview
-                  _buildStatsOverview(),
-                  const SizedBox(height: 32),
-
-                  // Quick Actions
-                  _buildQuickActionsSection(),
-                  const SizedBox(height: 32),
-
-                  // Recent Activity
-                  _buildRecentActivitySection(),
-                  const SizedBox(height: 32),
-
-                  // System Overview
-                  _buildSystemOverview(),
-                ],
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildModernDashboardHeader() {
-    return Container(
-      padding: const EdgeInsets.fromLTRB(24, 24, 24, 24),
-      decoration: BoxDecoration(
-        color: AppTheme.surfaceElevated,
-        border: Border(
-          bottom: BorderSide(
-            color: Colors.white.withOpacity(0.05),
-            width: 1,
-          ),
-        ),
-      ),
-      child: SafeArea(
-        child: Row(
-          children: [
-            Container(
-              padding: const EdgeInsets.all(12),
-              decoration: BoxDecoration(
-                color: AppTheme.primaryAccent.withOpacity(0.15),
-                borderRadius: BorderRadius.circular(12),
-                border: Border.all(
-                  color: AppTheme.primaryAccent.withOpacity(0.3),
-                  width: 1,
-                ),
-              ),
-              child: const Icon(
-                Icons.dashboard,
-                color: AppTheme.primaryAccent,
-                size: 28,
-              ),
-            ),
-            const SizedBox(width: 16),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Text(
-                    'Admin Dashboard',
-                    style: TextStyle(
-                      color: AppTheme.textPrimary,
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  const SizedBox(height: 4),
-                  Text(
-                    'Manage your system and monitor performance',
-                    style: TextStyle(
-                      color: AppTheme.textSecondary,
-                      fontSize: 16,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            if (MediaQuery.of(context).size.width < 1200)
-              Builder(
-                builder: (context) => IconButton(
-                  onPressed: () => Scaffold.of(context).openDrawer(),
-                  icon: const Icon(Icons.menu, color: AppTheme.textPrimary, size: 28),
-                ),
-              ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildWelcomeSection() {
-    return Container(
-      padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        color: AppTheme.surface,
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(
-          color: Colors.white.withOpacity(0.05),
-          width: 1,
-        ),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          _buildSectionHeader('Welcome Back!', Icons.waving_hand),
-          const SizedBox(height: 16),
-          Row(
-            children: [
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Good ${_getGreeting()}!',
-                      style: AppTheme.titleMedium.copyWith(
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-                    Text(
-                      'Here\'s what\'s happening with your system today. You have new reports to review and content to manage.',
-                      style: AppTheme.bodyMedium.copyWith(
-                        color: AppTheme.textSecondary,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(width: 16),
-              Container(
-                padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  color: AppTheme.primaryAccent.withOpacity(0.15),
-                  borderRadius: BorderRadius.circular(12),
-                  border: Border.all(
-                    color: AppTheme.primaryAccent.withOpacity(0.3),
-                    width: 1,
-                  ),
-                ),
-                child: Icon(
-                  Icons.notifications_active,
-                  color: AppTheme.primaryAccent,
-                  size: 24,
-                ),
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildSectionHeader(String title, IconData icon) {
-    return Row(
-      children: [
-        Container(
-          padding: const EdgeInsets.all(8),
-          decoration: BoxDecoration(
-            color: AppTheme.primaryAccent.withOpacity(0.15),
-            borderRadius: BorderRadius.circular(8),
-            border: Border.all(
-              color: AppTheme.primaryAccent.withOpacity(0.3),
-              width: 1,
-            ),
-          ),
-          child: Icon(
-            icon,
-            color: AppTheme.primaryAccent,
-            size: 20,
-          ),
-        ),
-        const SizedBox(width: 12),
-        Text(
-          title,
-          style: AppTheme.titleMedium.copyWith(
-            fontWeight: FontWeight.bold,
-            color: AppTheme.textPrimary,
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildStatsOverview() {
-    return Container(
-      padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        color: AppTheme.surface,
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(
-          color: Colors.white.withOpacity(0.05),
-          width: 1,
-        ),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          _buildSectionHeader('System Overview', Icons.analytics),
-          const SizedBox(height: 20),
-          FutureBuilder<Map<String, int>>(
-            future: _getQuickStats(),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return const Center(child: CircularProgressIndicator());
-              }
-
-              final stats = snapshot.data ?? {};
-              return GridView.count(
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                crossAxisCount: MediaQuery.of(context).size.width > 800 ? 4 : 2,
-                childAspectRatio: 1.2,
-                crossAxisSpacing: 16,
-                mainAxisSpacing: 16,
-                children: [
-                  _buildStatCard(
-                    'Total Reports',
-                    stats['totalReports']?.toString() ?? '147',
-                    Icons.assessment,
-                    AppTheme.primaryAccent,
-                  ),
-                  _buildStatCard(
-                    'Published Posts',
-                    stats['publishedPosts']?.toString() ?? '23',
-                    Icons.public,
-                    AppTheme.secondaryAccent,
-                  ),
-                  _buildStatCard(
-                    'Active Users',
-                    stats['activeUsers']?.toString() ?? '89',
-                    Icons.people,
-                    AppTheme.yellowAccent,
-                  ),
-                  _buildStatCard(
-                    'Total Views',
-                    stats['totalViews']?.toString() ?? '2.4K',
-                    Icons.visibility,
-                    AppTheme.accessoryAccent,
-                  ),
-                ],
-              );
-            },
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildStatCard(
-      String title, String value, IconData icon, Color color) {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: color.withOpacity(0.08),
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: color.withOpacity(0.3)),
-      ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(icon, color: color, size: 28),
-          const SizedBox(height: 8),
-          Text(
-            value,
-            style: AppTheme.titleLarge.copyWith(
-              fontWeight: FontWeight.bold,
-              color: color,
-            ),
-          ),
-          const SizedBox(height: 4),
-          Text(
-            title,
-            style: AppTheme.bodySmall.copyWith(
-              color: AppTheme.textSecondary,
-            ),
-            textAlign: TextAlign.center,
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildQuickActionsSection() {
-    return Container(
-      padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        color: AppTheme.surface,
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(
-          color: Colors.white.withOpacity(0.05),
-          width: 1,
-        ),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          _buildSectionHeader('Quick Actions', Icons.flash_on),
-          const SizedBox(height: 20),
-          GridView.count(
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            crossAxisCount: MediaQuery.of(context).size.width > 800 ? 2 : 1,
-            childAspectRatio: 3.5,
-            crossAxisSpacing: 16,
-            mainAxisSpacing: 16,
-            children: [
-              _buildQuickActionCard(
-                'Create New Post',
-                Icons.add_circle,
-                AppTheme.primaryAccent,
-                () => setState(() => _selectedIndex = 4),
-              ),
-              _buildQuickActionCard(
-                'Manage Users',
-                Icons.people,
-                AppTheme.secondaryAccent,
-                () => setState(() => _selectedIndex = 2),
-              ),
-              _buildQuickActionCard(
-                'View Reports',
-                Icons.assessment,
-                AppTheme.yellowAccent,
-                () => setState(() => _selectedIndex = 7),
-              ),
-              _buildQuickActionCard(
-                'System Analytics',
-                Icons.analytics,
-                AppTheme.accessoryAccent,
-                () => setState(() => _selectedIndex = 3),
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildQuickActionCard(
-      String title, IconData icon, Color color, VoidCallback onTap) {
-    return InkWell(
-      onTap: onTap,
-      borderRadius: BorderRadius.circular(12),
-      child: Container(
-        padding: const EdgeInsets.all(16),
-        decoration: BoxDecoration(
-          color: color.withOpacity(0.08),
-          borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: color.withOpacity(0.3)),
-        ),
-        child: Row(
-          children: [
-            Icon(icon, color: color, size: 24),
-            const SizedBox(width: 12),
-            Expanded(
-              child: Text(
-                title,
-                style: AppTheme.bodyMedium.copyWith(
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-            ),
-            Icon(
-              Icons.arrow_forward_ios,
-              size: 16,
-              color: AppTheme.textSecondary,
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildRecentActivitySection() {
-    return Container(
-      padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        color: AppTheme.surface,
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(
-          color: Colors.white.withOpacity(0.05),
-          width: 1,
-        ),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          _buildSectionHeader('Recent Activity', Icons.schedule),
-          const SizedBox(height: 20),
-
-          // Sample activity items
-          _buildActivityItem(
-            'New report submitted',
-            'Pipeline inspection report #147',
-            Icons.assessment,
-            AppTheme.primaryAccent,
-            '2 hours ago',
-          ),
-          _buildActivityItem(
-            'User registered',
-            'John Doe joined the system',
-            Icons.person_add,
-            AppTheme.secondaryAccent,
-            '4 hours ago',
-          ),
-          _buildActivityItem(
-            'Post published',
-            'Safety update for equipment procedures',
-            Icons.public,
-            AppTheme.yellowAccent,
-            '1 day ago',
-          ),
-          _buildActivityItem(
-            'System backup completed',
-            'Daily backup successful',
-            Icons.backup,
-            AppTheme.accessoryAccent,
-            '1 day ago',
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildActivityItem(
-      String title, String subtitle, IconData icon, Color color, String time) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 16),
-      child: Row(
-        children: [
-          Container(
-            padding: const EdgeInsets.all(8),
-            decoration: BoxDecoration(
-              color: color.withOpacity(0.15),
-              borderRadius: BorderRadius.circular(8),
-              border: Border.all(
-                color: color.withOpacity(0.3),
-                width: 1,
-              ),
-            ),
-            child: Icon(icon, color: color, size: 20),
-          ),
-          const SizedBox(width: 12),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  title,
-                  style: AppTheme.bodyMedium.copyWith(
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-                const SizedBox(height: 2),
-                Text(
-                  subtitle,
-                  style: AppTheme.bodySmall.copyWith(
-                    color: AppTheme.textSecondary,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Text(
-            time,
-            style: AppTheme.bodySmall.copyWith(
-              color: AppTheme.textSecondary,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildSystemOverview() {
-    return Container(
-      padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        color: AppTheme.surface,
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(
-          color: Colors.white.withOpacity(0.05),
-          width: 1,
-        ),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          _buildSectionHeader('System Health', Icons.health_and_safety),
-          const SizedBox(height: 20),
-          Row(
-            children: [
-              Expanded(
-                child: _buildHealthItem(
-                  'Server Status',
-                  'Online',
-                  Icons.dns,
-                  AppTheme.secondaryAccent,
-                  0.95,
-                ),
-              ),
-              const SizedBox(width: 16),
-              Expanded(
-                child: _buildHealthItem(
-                  'Database',
-                  'Healthy',
-                  Icons.storage,
-                  AppTheme.primaryAccent,
-                  0.88,
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 16),
-          Row(
-            children: [
-              Expanded(
-                child: _buildHealthItem(
-                  'Storage Usage',
-                  '65% Used',
-                  Icons.pie_chart,
-                  AppTheme.yellowAccent,
-                  0.65,
-                ),
-              ),
-              const SizedBox(width: 16),
-              Expanded(
-                child: _buildHealthItem(
-                  'Response Time',
-                  '< 200ms',
-                  Icons.speed,
-                  AppTheme.accessoryAccent,
-                  0.92,
-                ),
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildHealthItem(
-      String title, String value, IconData icon, Color color, double progress) {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: color.withOpacity(0.08),
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: color.withOpacity(0.3)),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              Icon(icon, color: color, size: 20),
-              const SizedBox(width: 8),
-              Expanded(
-                child: Text(
-                  title,
-                  style: AppTheme.bodyMedium.copyWith(
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 8),
-          Text(
-            value,
-            style: AppTheme.titleMedium.copyWith(
-              color: color,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          const SizedBox(height: 8),
-          LinearProgressIndicator(
-            value: progress,
-            backgroundColor: color.withOpacity(0.2),
-            valueColor: AlwaysStoppedAnimation<Color>(color),
-          ),
-        ],
-      ),
-    );
-  }
-
-  String _getGreeting() {
-    final hour = DateTime.now().hour;
-    if (hour < 12) return 'Morning';
-    if (hour < 17) return 'Afternoon';
-    return 'Evening';
   }
 
   Widget _buildNewsManagement() {
@@ -832,7 +217,7 @@ class _AdminMainScreenState extends State<AdminMainScreen> {
           ElevatedButton.icon(
             onPressed: () {
               setState(() {
-                _selectedIndex = 4; // Navigate to Create Post
+                _selectedIndex = 6; // Navigate to Create Post
               });
             },
             icon: const Icon(Icons.add),
@@ -914,7 +299,7 @@ class _AdminMainScreenState extends State<AdminMainScreen> {
               ),
             ),
             ElevatedButton.icon(
-              onPressed: () => setState(() => _selectedIndex = 4),
+              onPressed: () => setState(() => _selectedIndex = 6),
               icon: const Icon(Icons.add, size: 18),
               label: const Text('Create Post'),
               style: ElevatedButton.styleFrom(
@@ -934,6 +319,67 @@ class _AdminMainScreenState extends State<AdminMainScreen> {
               ),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _buildSectionHeader(String title, IconData icon) {
+    return Row(
+      children: [
+        Container(
+          padding: const EdgeInsets.all(8),
+          decoration: BoxDecoration(
+            color: AppTheme.primaryAccent.withOpacity(0.1),
+            borderRadius: BorderRadius.circular(8),
+          ),
+          child: Icon(
+            icon,
+            color: AppTheme.primaryAccent,
+            size: 20,
+          ),
+        ),
+        const SizedBox(width: 12),
+        Text(
+          title,
+          style: AppTheme.titleMedium.copyWith(
+            fontWeight: FontWeight.bold,
+            color: AppTheme.textPrimary,
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildStatCard(
+      String title, String value, IconData icon, Color color) {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: color.withOpacity(0.05),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: color.withOpacity(0.2)),
+      ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(icon, color: color, size: 28),
+          const SizedBox(height: 8),
+          Text(
+            value,
+            style: AppTheme.titleLarge.copyWith(
+              fontWeight: FontWeight.bold,
+              color: color,
+            ),
+          ),
+          const SizedBox(height: 4),
+          Text(
+            title,
+            style: AppTheme.bodySmall.copyWith(
+              color: AppTheme.textSecondary,
+            ),
+            textAlign: TextAlign.center,
+          ),
+        ],
       ),
     );
   }

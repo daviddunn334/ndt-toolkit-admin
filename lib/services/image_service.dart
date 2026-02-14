@@ -3,10 +3,12 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:uuid/uuid.dart';
+import 'admin_metrics_service.dart';
 
 class ImageService {
   final FirebaseStorage _storage = FirebaseStorage.instance;
   final ImagePicker _picker = ImagePicker();
+  final AdminMetricsService _metrics = AdminMetricsService();
   
   // Pick an image from gallery
   Future<XFile?> pickImageFromGallery() async {
@@ -54,6 +56,7 @@ class ImageService {
       
       // Get the download URL
       final String downloadUrl = await snapshot.ref.getDownloadURL();
+      await _metrics.incrementStorageUpload(source: 'profile_image');
       return downloadUrl;
     } catch (e) {
       print('Error uploading profile image: $e');
@@ -85,6 +88,7 @@ class ImageService {
       
       // Get the download URL
       final String downloadUrl = await snapshot.ref.getDownloadURL();
+      await _metrics.incrementStorageUpload(source: 'report_image');
       return downloadUrl;
     } catch (e) {
       print('Error uploading report image: $e');
@@ -116,6 +120,7 @@ class ImageService {
       
       // Get the download URL
       final String downloadUrl = await snapshot.ref.getDownloadURL();
+      await _metrics.incrementStorageUpload(source: 'report_image');
       return downloadUrl;
     } catch (e) {
       print('Error uploading report image with type: $e');

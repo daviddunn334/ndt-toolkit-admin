@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import '../models/feedback_submission.dart';
+import 'admin_metrics_service.dart';
 
 class FeedbackService {
   static final FeedbackService _instance = FeedbackService._internal();
@@ -13,6 +14,7 @@ class FeedbackService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseStorage _storage = FirebaseStorage.instance;
+  final AdminMetricsService _metrics = AdminMetricsService();
 
   // Collection reference
   CollectionReference get _feedbackCollection => _firestore.collection('feedback');
@@ -76,6 +78,7 @@ class FeedbackService {
       
       final String downloadUrl = await snapshot.ref.getDownloadURL();
       print('Screenshot uploaded successfully: $downloadUrl');
+      await _metrics.incrementStorageUpload(source: 'feedback_screenshot');
       return downloadUrl;
     } catch (e) {
       print('Error uploading screenshot: $e');
@@ -232,7 +235,7 @@ class FeedbackService {
     }
   }
 
-  // Get recent feedback (for dashboard)
+  // Get recent feedback (admin analytics)
   Future<List<FeedbackSubmission>> getRecentFeedback({int limit = 5}) async {
     try {
       final snapshot = await _feedbackCollection

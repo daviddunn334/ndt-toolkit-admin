@@ -1,5 +1,6 @@
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/foundation.dart';
+import 'admin_metrics_service.dart';
 
 /// Service for tracking user behavior and app analytics
 class AnalyticsService {
@@ -8,6 +9,7 @@ class AnalyticsService {
   AnalyticsService._internal();
 
   final FirebaseAnalytics _analytics = FirebaseAnalytics.instance;
+  final AdminMetricsService _metrics = AdminMetricsService();
   
   /// Get the analytics observer for navigation tracking
   FirebaseAnalyticsObserver get observer => FirebaseAnalyticsObserver(
@@ -183,6 +185,7 @@ class AnalyticsService {
     required String screen,
     String? stackTrace,
   }) async {
+    await _metrics.recordError(screen: screen);
     await logEvent(
       name: 'error_occurred',
       parameters: {

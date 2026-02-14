@@ -1,6 +1,7 @@
 import 'package:cloud_functions/cloud_functions.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../services/analytics_service.dart';
+import 'admin_metrics_service.dart';
 
 /// Service for handling user account deletion
 /// Implements GDPR "Right to be Forgotten" and CCPA compliance
@@ -8,6 +9,7 @@ class AccountDeletionService {
   final FirebaseFunctions _functions = FirebaseFunctions.instance;
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final AnalyticsService _analytics = AnalyticsService();
+  final AdminMetricsService _metrics = AdminMetricsService();
 
   /// Delete the current user's account and all associated data
   /// 
@@ -40,6 +42,8 @@ class AccountDeletionService {
         'userId': user.uid,
       });
 
+      await _metrics.incrementFunctionCall(name: 'deleteUserAccount', success: true);
+
       if (result.data['success'] == true) {
         // Log successful deletion (this will be the last event for this user)
         await _analytics.logEvent(
@@ -56,6 +60,7 @@ class AccountDeletionService {
         throw Exception(result.data['message'] ?? 'Account deletion failed');
       }
     } catch (e) {
+      await _metrics.incrementFunctionCall(name: 'deleteUserAccount', success: false);
       // Log failure
       await _analytics.logError(
         errorMessage: 'Account deletion failed: $e',

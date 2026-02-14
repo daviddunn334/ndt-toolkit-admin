@@ -100,9 +100,9 @@ class AdminDrawer extends StatelessWidget {
                 const SizedBox(height: 8),
                 _buildMenuItem(
                   context,
-                  'Dashboard',
-                  Icons.dashboard_outlined,
-                  Icons.dashboard,
+                  'Analytics',
+                  Icons.analytics_outlined,
+                  Icons.analytics,
                   0,
                   isLargeScreen,
                 ),
@@ -127,7 +127,7 @@ class AdminDrawer extends StatelessWidget {
                   'Employee Management',
                   Icons.badge_outlined,
                   Icons.badge,
-                  9,
+                  3,
                   isLargeScreen,
                 ),
                 _buildMenuItem(
@@ -135,7 +135,7 @@ class AdminDrawer extends StatelessWidget {
                   'Feedback Management',
                   Icons.feedback_outlined,
                   Icons.feedback,
-                  7,
+                  4,
                   isLargeScreen,
                 ),
                 _buildMenuItem(
@@ -143,15 +143,7 @@ class AdminDrawer extends StatelessWidget {
                   'PDF Management',
                   Icons.picture_as_pdf_outlined,
                   Icons.picture_as_pdf,
-                  8,
-                  isLargeScreen,
-                ),
-                _buildMenuItem(
-                  context,
-                  'Analytics',
-                  Icons.analytics_outlined,
-                  Icons.analytics,
-                  3,
+                  5,
                   isLargeScreen,
                 ),
                 Padding(
@@ -178,7 +170,7 @@ class AdminDrawer extends StatelessWidget {
                   'Create Post',
                   Icons.add_circle_outline,
                   Icons.add_circle,
-                  4,
+                  6,
                   isLargeScreen,
                 ),
                 _buildMenuItem(
@@ -186,7 +178,7 @@ class AdminDrawer extends StatelessWidget {
                   'Drafts',
                   Icons.drafts_outlined,
                   Icons.drafts,
-                  5,
+                  7,
                   isLargeScreen,
                 ),
                 _buildMenuItem(
@@ -194,7 +186,7 @@ class AdminDrawer extends StatelessWidget {
                   'Published',
                   Icons.public_outlined,
                   Icons.public,
-                  6,
+                  8,
                   isLargeScreen,
                 ),
                 Padding(
