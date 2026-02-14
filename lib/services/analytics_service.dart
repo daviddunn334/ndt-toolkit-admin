@@ -103,6 +103,7 @@ class AnalyticsService {
 
   /// Log calculator usage
   Future<void> logCalculatorUsed(String calculatorName, {Map<String, dynamic>? inputValues}) async {
+    await _metrics.incrementToolUsage(toolName: calculatorName);
     await logEvent(
       name: 'calculator_used',
       parameters: {

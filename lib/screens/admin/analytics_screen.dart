@@ -83,7 +83,11 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> {
                       const SizedBox(height: 24),
                       _buildOverviewRow(data),
                       const SizedBox(height: 24),
+                      _buildMostUsedToolsCard(data),
+                      const SizedBox(height: 24),
                       _buildCostReliability(data),
+                      const SizedBox(height: 24),
+                      _buildToolUsageSection(data),
                     ],
                   ),
                 );
@@ -304,6 +308,81 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> {
     );
   }
 
+  Widget _buildMostUsedToolsCard(_AdminAnalyticsSnapshot data) {
+    final toolUsage = _metricMapInt(data.metrics, 'tool_usage_by_name');
+    final topTools = _sortedToolUsage(toolUsage, limit: 5);
+
+    return _buildSummaryCard(
+      title: 'Most Used Tools',
+      icon: Icons.build_circle,
+      child: topTools.isEmpty
+          ? Padding(
+              padding: const EdgeInsets.only(top: 8),
+              child: Text(
+                'No tool usage recorded yet.',
+                style: AppTheme.bodyMedium.copyWith(
+                  color: AppTheme.textSecondary,
+                ),
+              ),
+            )
+          : Padding(
+              padding: const EdgeInsets.only(top: 8),
+              child: Wrap(
+                spacing: 8,
+                runSpacing: 8,
+                children: topTools
+                    .map((entry) => _buildToolUsagePill(entry.key, entry.value))
+                    .toList(),
+              ),
+            ),
+    );
+  }
+
+  Widget _buildToolUsageSection(_AdminAnalyticsSnapshot data) {
+    final totalUsage = _metricInt(data.metrics, 'tool_usage_total');
+    final toolUsage = _metricMapInt(data.metrics, 'tool_usage_by_name');
+    final topTools = _sortedToolUsage(toolUsage, limit: 10);
+
+    return _buildSummaryCard(
+      title: 'Tool Usage',
+      icon: Icons.handyman,
+      items: [
+        _SummaryItem('Total tool usage', totalUsage.toString()),
+      ],
+      child: Column(
+        children: [
+          if (topTools.isEmpty)
+            Padding(
+              padding: const EdgeInsets.only(top: 8),
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  'No tool usage recorded yet.',
+                  style: AppTheme.bodyMedium.copyWith(
+                    color: AppTheme.textSecondary,
+                  ),
+                ),
+              ),
+            ),
+          if (topTools.isNotEmpty)
+            Padding(
+              padding: const EdgeInsets.only(top: 8),
+              child: Column(
+                children: topTools
+                    .map(
+                      (entry) => Padding(
+                        padding: const EdgeInsets.only(bottom: 8),
+                        child: _buildSummaryRow(entry.key, entry.value.toString()),
+                      ),
+                    )
+                    .toList(),
+              ),
+            ),
+        ],
+      ),
+    );
+  }
+
   Widget _buildKpiCard({
     required String title,
     required String value,
@@ -448,6 +527,38 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> {
     );
   }
 
+  Widget _buildToolUsagePill(String label, int count) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+      decoration: BoxDecoration(
+        color: AppTheme.primaryAccent.withOpacity(0.12),
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: AppTheme.primaryAccent.withOpacity(0.2)),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(Icons.build, size: 14, color: AppTheme.primaryAccent),
+          const SizedBox(width: 6),
+          Text(
+            label,
+            style: AppTheme.bodySmall.copyWith(
+              color: AppTheme.textPrimary,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+          const SizedBox(width: 6),
+          Text(
+            count.toString(),
+            style: AppTheme.bodySmall.copyWith(
+              color: AppTheme.textSecondary,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   int _metricInt(Map<String, dynamic> metrics, String key) {
     final value = metrics[key];
     if (value is int) {
@@ -457,6 +568,36 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> {
       return value.round();
     }
     return 0;
+  }
+
+  Map<String, int> _metricMapInt(Map<String, dynamic> metrics, String key) {
+    final value = metrics[key];
+    if (value is Map) {
+      return value.map(
+        (metricKey, metricValue) {
+          if (metricValue is int) {
+            return MapEntry(metricKey.toString(), metricValue);
+          }
+          if (metricValue is num) {
+            return MapEntry(metricKey.toString(), metricValue.round());
+          }
+          return MapEntry(metricKey.toString(), 0);
+        },
+      );
+    }
+    return {};
+  }
+
+  List<MapEntry<String, int>> _sortedToolUsage(
+    Map<String, int> toolUsage, {
+    int limit = 10,
+  }) {
+    final entries = toolUsage.entries.toList()
+      ..sort((a, b) => b.value.compareTo(a.value));
+    if (entries.length <= limit) {
+      return entries;
+    }
+    return entries.take(limit).toList();
   }
 
   String _formatTimestamp(DateTime value) {

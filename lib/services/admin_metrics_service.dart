@@ -46,4 +46,12 @@ class AdminMetricsService {
       'updated_at': FieldValue.serverTimestamp(),
     }, SetOptions(merge: true));
   }
+
+  Future<void> incrementToolUsage({required String toolName}) async {
+    await _metricsDoc.set({
+      'tool_usage_total': FieldValue.increment(1),
+      'tool_usage_by_name.$toolName': FieldValue.increment(1),
+      'updated_at': FieldValue.serverTimestamp(),
+    }, SetOptions(merge: true));
+  }
 }
