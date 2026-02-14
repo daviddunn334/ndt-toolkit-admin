@@ -120,7 +120,7 @@ function showInstallBanner() {
       
       // Log analytics event
       if (window.firebase && window.firebase.analytics) {
-        window.firebase.analytics.logEvent('pwa_install_prompt_action', {
+        window.firebase.analytics('pwa_install_prompt_action', {
           action: 'accepted',
           outcome: outcome
         });
@@ -144,7 +144,7 @@ function showInstallBanner() {
     
     // Log analytics event
     if (window.firebase && window.firebase.analytics) {
-      window.firebase.analytics.logEvent('pwa_install_prompt_action', {
+      window.firebase.analytics('pwa_install_prompt_action', {
         action: 'dismissed'
       });
     }
@@ -152,7 +152,7 @@ function showInstallBanner() {
 
   // Log analytics event for banner shown
   if (window.firebase && window.firebase.analytics) {
-    window.firebase.analytics.logEvent('pwa_install_prompt_shown', {
+    window.firebase.analytics('pwa_install_prompt_shown', {
       visit_count: incrementVisitCount()
     });
   }
@@ -192,7 +192,7 @@ window.addEventListener('appinstalled', (e) => {
   
   // Log analytics event
   if (window.firebase && window.firebase.analytics) {
-    window.firebase.analytics.logEvent('pwa_installed', {
+    window.firebase.analytics('pwa_installed', {
       platform: navigator.platform,
       user_agent: navigator.userAgent
     });
@@ -209,7 +209,7 @@ if (window.matchMedia('(display-mode: standalone)').matches ||
   
   // Log analytics event on app launch
   if (window.firebase && window.firebase.analytics) {
-    window.firebase.analytics.logEvent('pwa_launched', {
+    window.firebase.analytics('pwa_launched', {
       display_mode: 'standalone'
     });
   }
