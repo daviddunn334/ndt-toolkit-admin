@@ -1,0 +1,15 @@
+{
+  "projects": {
+    "default": "ndt-toolkit"
+  },
+  "targets": {
+    "ndt-toolkit": {
+      "hosting": {
+        "admin": [
+          "admin-ndt-toolkit"
+        ]
+      }
+    }
+  },
+  "etags": {}
+}
